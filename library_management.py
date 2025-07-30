@@ -1,5 +1,4 @@
 # Content Library Management: Managing a library of streaming content, including movies and TV shows
-
 from numpy import append
 import random
 from utility import limpar_tela
@@ -166,7 +165,6 @@ def todas_as_midias():
     midias.append(Filme("1917", "Ação", "16", 119))
     midias.append(Filme("Invasão do mundo: Batalha de Los Angeles", "Ação", "12", 116))
 
-
     # Comédia
     midias.append(Filme("O auto da Compadecida", "Comédia", "12", 100))
     midias.append(Filme("Debi & Loide", "Comédia", "12", 107))
@@ -179,7 +177,6 @@ def todas_as_midias():
     midias.append(Serie("The Office", "Comédia", "14", 22, 201, 9))
     midias.append(Filme("Click", "Comédia", "12", 107))
 
- 
     # Drama
     midias.append(Serie("This Is Us", "Drama", "14", 43, 106, 6))
     midias.append(Filme("A Lista de Schindler", "Drama", "16", 195))
@@ -191,7 +188,6 @@ def todas_as_midias():
     midias.append(Filme("A Teoria de Tudo", "Drama", "12", 123))
     midias.append(Filme("O Lobo de Wall Street", "Drama", "16", 180))
 
-
     # Romance
     midias.append(Filme("A Culpa é das Estrelas", "Romance", "12", 126))
     midias.append(Filme("Como Eu Era Antes de Você", "Romance", "12", 110))
@@ -201,7 +197,6 @@ def todas_as_midias():
     midias.append(Serie("Emily em Paris", "Romance", "12", 30, 30, 3))
     midias.append(Filme("Para Todos os Garotos que Já Amei", "Romance", "12", 99))
 
-
     # Terror
     midias.append(Filme("O Telefone Preto", "Terror", "16", 115))
     midias.append(Filme("Sorria", "Terror", "16", 100))
@@ -210,7 +205,6 @@ def todas_as_midias():
     midias.append(Filme("Five Nights at Freddy's", "Terror", "16", 110))
     midias.append(Filme("Five Nights at Freddy's 2", "Terror", "16", 130))
 
-
     # Documentário
     midias.append(Documentario("Retratos Fantasmas", "Documentário", "10", 60))
     midias.append(Documentario("Explicando a mente", "Documentário", "10", 30))
@@ -218,8 +212,6 @@ def todas_as_midias():
     midias.append(Documentario("Nosso Planeta", "Documentário", "L", 50))
     midias.append(Documentario("O Começo da Vida", "Documentário", "L", 90))
     midias.append(Documentario("Segunda Guerra Mundial em Cores", "Documentário", "L", 50))
-
-
 
     # Animação
     midias.append(Anime("Attack on Titan", "Animação", "16", 24, 75, 4))
@@ -272,14 +264,13 @@ def todas_as_midias():
     
     return midias
 
-
 def Explorar_Conteudo(usuario):
     print("Quem está assistindo?")
     continuar = usuario.listar_perfis()
     if not continuar:
         return
     nome_perfil = input("Digite o nome do perfil: ")
-    perfil = usuario.obter_perfil_por_nome(nome_perfil)
+    perfil = usuario.obter_perfil_por_nome(nome_perfil) # É um objeto? ou algo diferente?
     if perfil is None:
         print(f"Perfil '{nome_perfil}' não encontrado. Por favor, tente novamente.")
         return

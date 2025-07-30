@@ -1,5 +1,4 @@
 # Parental Control Settings: Implementing parental controls for content filtering;
-from user_management import User
 from utility import limpar_tela
 import time
 
@@ -22,7 +21,6 @@ def activate_parental_control(usuario):
             print("Perfil não encontrado. Verifique a sua escrita.\n")
             time.sleep(2)
             limpar_tela()
-
 
 def deactivate_parental_control(usuario):
     while True:

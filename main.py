@@ -1,9 +1,8 @@
 import time
-from user_management import User, Perfil
+from user_management import User
 from parental_control import activate_parental_control, deactivate_parental_control
 from utility import limpar_tela
-from recommendations import Recomendacoes
-from library_management import Explorar_Conteudo, Historico
+from library_management import Explorar_Conteudo
 from bookmarking_and_history import ver_historico_de_exibicao, limpar_historico
  
 

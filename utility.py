@@ -8,3 +8,4 @@ def limpar_tela():
         os.system('cls')
     else:
         os.system('clear')
+
