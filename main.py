@@ -2,7 +2,7 @@ import time
 from user_management import User
 from parental_control import activate_parental_control, deactivate_parental_control
 from utility import limpar_tela
-from library_management import Explorar_Conteudo
+from library_management import Explorar_Conteudo, Explorar_Conteudo_Convidado
 from bookmarking_and_history import ver_historico_de_exibicao, limpar_historico
  
 
@@ -234,6 +234,10 @@ def menu_principal_convidado():
     if opcao == "1":
         limpar_tela()
         print("Consultando biblioteca de conteúdo...\n")
+        time.sleep(2)
+        limpar_tela()
+        Explorar_Conteudo_Convidado()
+        print("Você pode criar uma conta para acessar mais funcionalidades.\n")
         time.sleep(2)
         limpar_tela()
         menu_principal_convidado()

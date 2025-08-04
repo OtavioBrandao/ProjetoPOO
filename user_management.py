@@ -9,6 +9,8 @@
 # Ativar/desativar controle parental por perfil
 from recommendations import Recomendacoes
 from library_management import Historico
+import time
+from utility import limpar_tela
 
 class User:
     def __init__(self, nome, email, senha):
@@ -16,10 +18,15 @@ class User:
         self.email = email
         self.senha = senha
         self.perfis = []
-        self.plano = "Gratuito" # Plano default ao criar conta
+        self.plano = Plano("Gratuito", "R$ 0,00")
 
     
     def adicionar_perfil(self, nome, controle_parental=False):
+
+        if len(self.perfis) >= self.plano.maximo_perfis:
+            print(f"Limite de perfis atingido. Você só pode ter {self.plano.maximo_perfis} perfis.")
+            return
+        
         if any(perfil.nome_perfil == nome for perfil in self.perfis):
             print(f"Perfil '{nome}' já existe. Por favor, escolha outro nome.")
             return
@@ -68,39 +75,80 @@ class User:
         else:
             return False
         
-    # Ver a possibilidade de ver forma de pagamento e tal com o gerenciamento de plano
     def gerenciar_plano(self):
-        plano = self.plano
-        if plano == "Gratuito":
-            print("Seu plano atual é o Gratuito. Deseja mudar para um plano pago?")
-            print("1. Mudar para Básico")
-            print("2. Mudar para Premium")
-            print("3. Manter Gratuito")
-            escolha = input()
-            if escolha == "1":
-                self.plano = "Básico"
-                print("Plano mudado para Básico.")
-            elif escolha == "2":
-                self.plano = "Premium"
-                print("Plano mudado para Premium.")
-            elif escolha == "3":
-                print("Mantendo plano Gratuito.")
+        while True:
+            limpar_tela()
+            if self.plano.nome == "Gratuito":
+                print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
+                self.plano.exibir_beneficios()
+                print("\nOpções de Gerenciamento de Plano:")
+                print("=========================")
+                print("1. Mudar para Básico")
+                print("2. Mudar para Premium")
+                print("3. Voltar ao Menu Principal")
+                print("=========================")
+                escolha = input("Escolha uma opção: ")
+                if escolha == "1":
+                    self.plano.realizar_pagamento("Básico")
+                    time.sleep(2)
+                elif escolha == "2":
+                    self.plano.realizar_pagamento("Premium")
+                    time.sleep(2)
+                elif escolha == "3":
+                    print("Voltando ao Menu Principal...")
+                    break
+                else:
+                    print("Opção inválida.")
+                time.sleep(2)
+                limpar_tela()
 
-        elif plano == "Básico":
-            print("Seu plano atual é o Básico. Você tem acesso a recursos limitados.")
-            print("Para acessar mais recursos, considere mudar para o plano Premium. Deseja mudar?")
-            print("1. Mudar para Premium")
-            print("2. Manter Básico")
-
-            escolha = input()
-            if escolha == "1":
-                self.plano = "Premium"
-                print("Plano mudado para Premium.")
-            elif escolha == "2":
-                print("Mantendo plano Básico.")
-
-        elif plano == "Premium":
-            print("Seu plano atual é o Premium. Você tem acesso a todos os recursos.")
+            elif self.plano.nome == "Básico":
+                print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
+                self.plano.exibir_beneficios()
+                print("\nOpções de Gerenciamento de Plano:")
+                print("=========================")
+                print("1. Mudar para Premium")
+                print("2. Cancelar Plano")
+                print("3. Voltar ao Menu Principal")
+                print("=========================")
+                escolha = input("Escolha uma opção: ")
+                if escolha == "1":
+                    self.plano.realizar_pagamento("Premium")
+                elif escolha == "2":
+                    if self.plano.cancelar_plano() is True:
+                        if len(self.perfis) > 5:
+                            self.perfis = self.perfis[:5]
+                        print("Plano cancelado. Voltando ao plano Gratuito.")
+                    else:
+                        continue
+                elif escolha == "3":
+                    print("Voltando ao Menu Principal...")
+                    break
+                else:
+                    print("Opção inválida.")
+                time.sleep(2)
+                limpar_tela()
+            elif self.plano.nome == "Premium":
+                print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
+                self.plano.exibir_beneficios()
+                print("\nOpções de Gerenciamento de Plano:")
+                print("=========================")
+                print("1. Cancelar Plano")
+                print("2. Voltar ao Menu Principal")
+                print("=========================")
+                escolha = input("Escolha uma opção: ")
+                if escolha == "1":
+                    self.plano.cancelar_plano()
+                    if len(self.perfis) > 5:
+                        self.perfis = self.perfis[:5]
+                    print("Plano cancelado. Voltando ao plano Gratuito.")
+                elif escolha == "2":
+                    print("Voltando ao Menu Principal...")
+                    break
+                else:
+                    print("Opção inválida.")
+                time.sleep(2)
+                limpar_tela()
 
     def ativar_controle_parental(self, perfil):
         if perfil in self.perfis:
@@ -137,3 +185,138 @@ class Perfil:
 
     def __str__(self):
         return f"Perfil: {self.nome_perfil}, Controle Parental: {'Ativado' if self.controle_parental else 'Desativado'}"
+    
+class Plano:
+    def __init__(self, nome, preco):
+        self.nome = nome
+        self.preco = preco
+        self.beneficios = []
+        self.anuncios = True 
+        self.limite_diario = True
+        self.alta_definicao = False
+        self.multiplos_dispositivos = False
+        self.reviews = False
+        self.maximo_perfis = 5
+        self.beneficios = [
+            "Limite diário de conteúdos",
+            "Anúncios frequentes",
+            "5 perfis por conta",
+            "Avaliar conteúdo"
+        ]
+
+    def __str__(self):
+        return f"Plano: {self.nome}, Preço: {self.preco}"
+    
+    def exibir_beneficios(self):
+        print(f"Benefícios do plano {self.nome}:")
+        for beneficio in self.beneficios:
+            print(f" - {beneficio}")
+
+    def plano_gratuito(self):
+        self.nome = "Gratuito"
+        self.preco = "R$ 0,00"
+        self.beneficios = [
+            "Limite diário de conteúdos",
+            "Anúncios frequentes",
+            "5 perfis por conta",
+            "Avaliar conteúdo"
+        ]
+        self.anuncios = True
+        self.limite_diario = True
+        self.alta_definicao = False
+        self.multiplos_dispositivos = False
+        self.reviews = False
+        self.maximo_perfis = 5
+
+    def plano_basico(self):
+        self.nome = "Básico"
+        self.preco = "R$ 9,90"
+        self.beneficios = [
+            "Sem limite diário de conteúdos",
+            "Anúncios menos frequentes",
+            "Recomendações personalizadas",
+            "10 perfis por conta",
+            "Reviews e avaliações de conteúdo"
+        ]
+        self.anuncios = True
+        self.limite_diario = False
+        self.alta_definicao = False
+        self.multiplos_dispositivos = False
+        self.reviews = True
+        self.maximo_perfis = 10
+
+    def plano_premium(self):
+        self.nome = "Premium"
+        self.preco = "R$ 39,90"
+        self.beneficios = [
+            "Acesso a todos os conteúdos",
+            "Sem anúncios",
+            "Recomendações personalizadas",
+            "15 perfis por conta",
+            "Conteúdos em alta definição",
+            "Streaming em múltiplos dispositivos"
+        ]
+        self.anuncios = False
+        self.limite_diario = False
+        self.alta_definicao = True
+        self.multiplos_dispositivos = True
+        self.reviews = True
+        self.maximo_perfis = 15
+
+    def realizar_pagamento(self, nome_plano):
+        planos_disponiveis = ["Básico", "Premium"]
+        
+        if nome_plano not in planos_disponiveis:
+            print("Este plano não requer pagamento ou não existe.")
+            return
+
+        print(f"Iniciando o pagamento para o plano: {nome_plano}...")
+        print("Selecione a forma de pagamento:" \
+            "\n1. Cartão de Crédito" \
+            "\n2. Boleto Bancário" \
+            "\n3. Pix")
+        forma_pagamento = input("Digite o número da forma de pagamento: ")
+        if forma_pagamento not in ["1", "2", "3"]:
+            print("Forma de pagamento inválida. Tente novamente.")
+            return
+        print(f"Processando pagamento para o plano {nome_plano} com a forma de pagamento selecionada...")
+        if forma_pagamento == "1":
+            print("Pagamento com Cartão de Crédito selecionado.")
+        elif forma_pagamento == "2":
+            print("Pagamento com Boleto Bancário selecionado.")
+        elif forma_pagamento == "3":
+            print("Pagamento com Pix selecionado.")
+
+        pagamento_aprovado = True  
+
+        if pagamento_aprovado:
+            print("Pagamento aprovado!")
+            self.trocar_plano(nome_plano)
+            print(f"Plano alterado para: {self.nome}")
+            time.sleep(2)
+            limpar_tela()
+        else:
+            print("Pagamento recusado. Tente novamente.")
+            time.sleep(2)
+            limpar_tela()
+
+    def cancelar_plano(self):
+        print("Você tem certeza que deseja cancelar o plano?")
+        print("Alguns dos benefícios serão perdidos e você voltará ao plano Gratuito.")
+        print("Se caso você tiver mais de 5 perfis, eles serão reduzidos para 5.")
+        resposta = input("Digite 'sim' para confirmar ou 'não' para cancelar: ")
+        if resposta.lower() == "sim":
+            self.plano_gratuito()
+            time.sleep(2)
+            print("Plano cancelado com sucesso.")
+        else:
+            time.sleep(2)
+            print("Cancelamento do plano abortado.")
+
+    def trocar_plano(self, nome):
+        if nome == "Gratuito":
+            self.plano_gratuito()
+        elif nome == "Básico":
+            self.plano_basico()
+        elif nome == "Premium":
+            self.plano_premium()

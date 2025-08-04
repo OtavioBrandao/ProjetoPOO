@@ -1,7 +1,7 @@
 # Content Library Management: Managing a library of streaming content, including movies and TV shows
 from numpy import append
 import random
-from utility import limpar_tela
+from utility import limpar_tela, normalizar_texto
 import time
 
 class ConjuntoMidias:
@@ -11,15 +11,17 @@ class ConjuntoMidias:
     
     def buscar_por_titulo(self, titulo):
         resultados = []
+        titulo = normalizar_texto(titulo)
         for midia in self.midias:
-            if titulo.lower() in midia.titulo.lower():
+            if titulo in normalizar_texto(midia.titulo):
                 resultados.append(midia)
         return resultados if resultados else None
 
     def buscar_por_genero(self, genero):
         resultados = []
+        genero = normalizar_texto(genero)
         for midia in self.midias:
-            if genero.lower() in midia.genero.lower():
+            if genero in normalizar_texto(midia.genero):
                 resultados.append(midia)
         return resultados if resultados else None
 
@@ -43,15 +45,22 @@ class Midia:
     
     def assistir(self):
         limpar_tela()
-        print(f"Assistindo {self.titulo}...")
-        print()
+
+        titulo = self.titulo.strip()
+        titulo_centralizado = titulo.center(24)
+        print("░▀▄░░▄▀")
+        print("▄▄▄██▄▄▄▄▄")
+        print("█▒░▒░▒░█▀█ Assistindo:")
+        print(f"█░▒░▒░▒█▀█ {titulo_centralizado} ")
+        print("█▄▄▄▄▄▄███═════════════════════")
         print()
         print("Pressione Enter para parar de assistir.")
         input()
-        print(f"Você parou de assistir {self.titulo}.")
+        print(f"\nVocê parou de assistir {self.titulo}.")
         print("Obrigado por assistir!")
         time.sleep(2)
         limpar_tela()
+
 
 # Subclasses para diferentes tipos de mídia
 # Conceitos de Herança e Polimorfismo aqui
@@ -286,7 +295,7 @@ def Explorar_Conteudo(usuario):
         print("1. Buscar por Título")
         print("2. Buscar por Gênero")
         print("3. Navegar pela Biblioteca")
-        print("4. Assistir Conteúdo")
+        print("4. Selecionar conteúdo para assistir")
         print("5. Sair")
         print("==========================")
         escolha = input("Escolha uma opção: ")
@@ -322,7 +331,9 @@ def Explorar_Conteudo(usuario):
 
             if not resultados:
                 print("Conteúdo não encontrado.")
-                return
+                time.sleep(2)
+                limpar_tela()
+                continue
 
             print("\nConteúdos encontrados:\n")
             for idx, midia in enumerate(resultados):
@@ -346,6 +357,65 @@ def Explorar_Conteudo(usuario):
 
 
         elif escolha == "5":
+            print("Saindo da biblioteca...")
+            break
+
+        else:
+            print("Opção inválida. Tente novamente.")
+
+def Explorar_Conteudo_Convidado():
+    print("Bem-vindo(a) ao modo convidado!")
+    catalogo = ConjuntoMidias()
+    
+    for midia in todas_as_midias():
+        catalogo.midias.append(midia)
+
+    while True:
+        print("Biblioteca de Conteúdo:")
+        print("==========================")
+        print("1. Navegar pela Biblioteca")
+        print("2. Selecionar conteúdo para assistir")
+        print("3. Sair")
+        print("==========================")
+        escolha = input("Escolha uma opção: ")
+
+        if escolha == "1":
+            limpar_tela()
+            # Limitar a navegação para convidados: mostrar apenas 5 conteúdos aleatórios
+            catalogo.navegar(quantidade=5)
+
+        elif escolha == "2":
+            titulo = input("Digite o título do conteúdo que deseja assistir: ")
+            resultados = catalogo.buscar_por_titulo(titulo)
+
+            # Limitar resultados para convidados: mostrar no máximo 3 opções
+            if not resultados:
+                print("Conteúdo não encontrado.")
+                time.sleep(2)
+                limpar_tela()
+                continue
+
+            resultados_limitados = resultados[:3]
+
+            print("\nConteúdos encontrados (máx. 3):\n")
+            for idx, midia in enumerate(resultados_limitados):
+                print(f"[{idx + 1}]")
+                midia.exibir_informacoes()
+                print()
+
+            escolha_conteudo = input("Digite o número do conteúdo que deseja assistir: ")
+
+            if escolha_conteudo.isdigit():
+                indice = int(escolha_conteudo) - 1
+                if 0 <= indice < len(resultados_limitados):
+                    conteudo_escolhido = resultados_limitados[indice]
+                    conteudo_escolhido.assistir()
+                else:
+                    print("Opção inválida.")
+            else:
+                print("Entrada inválida.")
+
+        elif escolha == "3":
             print("Saindo da biblioteca...")
             break
 
