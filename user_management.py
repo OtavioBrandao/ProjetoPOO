@@ -85,17 +85,17 @@ class User:
                 print("=========================")
                 print("1. Mudar para Básico")
                 print("2. Mudar para Premium")
-                print("3. Voltar ao Menu Principal")
+                print("3. Voltar ao menu de configurações")
                 print("=========================")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
                     self.plano.realizar_pagamento("Básico")
-                    time.sleep(2)
+                    limpar_tela()
                 elif escolha == "2":
                     self.plano.realizar_pagamento("Premium")
-                    time.sleep(2)
+                    limpar_tela()
                 elif escolha == "3":
-                    print("Voltando ao Menu Principal...")
+                    print("Voltando ao menu de configurações...")
                     break
                 else:
                     print("Opção inválida.")
@@ -109,11 +109,12 @@ class User:
                 print("=========================")
                 print("1. Mudar para Premium")
                 print("2. Cancelar Plano")
-                print("3. Voltar ao Menu Principal")
+                print("3. Voltar ao menu de configurações")
                 print("=========================")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
                     self.plano.realizar_pagamento("Premium")
+                    limpar_tela()
                 elif escolha == "2":
                     if self.plano.cancelar_plano() is True:
                         if len(self.perfis) > 5:
@@ -134,7 +135,7 @@ class User:
                 print("\nOpções de Gerenciamento de Plano:")
                 print("=========================")
                 print("1. Cancelar Plano")
-                print("2. Voltar ao Menu Principal")
+                print("2. Voltar ao menu de configurações")
                 print("=========================")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
@@ -142,8 +143,10 @@ class User:
                     if len(self.perfis) > 5:
                         self.perfis = self.perfis[:5]
                     print("Plano cancelado. Voltando ao plano Gratuito.")
+                    time.sleep(2)
+                    limpar_tela()
                 elif escolha == "2":
-                    print("Voltando ao Menu Principal...")
+                    print("Voltando ao menu de configurações...")
                     break
                 else:
                     print("Opção inválida.")
@@ -279,7 +282,7 @@ class Plano:
         if forma_pagamento not in ["1", "2", "3"]:
             print("Forma de pagamento inválida. Tente novamente.")
             return
-        print(f"Processando pagamento para o plano {nome_plano} com a forma de pagamento selecionada...")
+        
         if forma_pagamento == "1":
             print("Pagamento com Cartão de Crédito selecionado.")
         elif forma_pagamento == "2":
@@ -287,18 +290,18 @@ class Plano:
         elif forma_pagamento == "3":
             print("Pagamento com Pix selecionado.")
 
+        print(f"Processando pagamento para o plano {nome_plano} com a forma de pagamento selecionada...")
+        time.sleep(2)  
         pagamento_aprovado = True  
 
         if pagamento_aprovado:
             print("Pagamento aprovado!")
             self.trocar_plano(nome_plano)
             print(f"Plano alterado para: {self.nome}")
-            time.sleep(2)
-            limpar_tela()
+            time.sleep(3)
         else:
             print("Pagamento recusado. Tente novamente.")
             time.sleep(2)
-            limpar_tela()
 
     def cancelar_plano(self):
         print("Você tem certeza que deseja cancelar o plano?")

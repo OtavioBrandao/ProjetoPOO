@@ -360,8 +360,6 @@ def menu_principal(usuario=None):
                 limpar_tela()
             elif opcao_historico == "4":
                 break   
-
-        time.sleep(2)
         limpar_tela()
         menu_principal(usuario)
     elif opcao == "7":
