@@ -3,6 +3,7 @@ from numpy import append
 import random
 from utility import limpar_tela, normalizar_texto
 import time
+from abc import ABC, abstractmethod
 
 class ConjuntoMidias:
     # Referente a varias midias
@@ -32,7 +33,7 @@ class ConjuntoMidias:
             midia.exibir_informacoes()
             print()
 
-class Midia:
+class Midia(ABC):
     # Referente a uma midia especifica
     def __init__(self, titulo, genero, classificacao, tempo_duracao):
         self.titulo = titulo
@@ -40,8 +41,9 @@ class Midia:
         self.classificacao = classificacao
         self.tempo_duracao = tempo_duracao
 
+    @abstractmethod
     def exibir_informacoes(self):
-        raise NotImplementedError("Este método deve ser implementado na subclasse.")
+        pass
     
     def assistir(self):
         limpar_tela()
@@ -60,10 +62,6 @@ class Midia:
         print("Obrigado por assistir!")
         time.sleep(2)
         limpar_tela()
-
-
-# Subclasses para diferentes tipos de mídia
-# Conceitos de Herança e Polimorfismo aqui
     
 class Filme(Midia):
     def exibir_informacoes(self):
@@ -133,7 +131,7 @@ class Anime(Midia):
         print(f"║ Temporadas: {self.temporadas:<38}║")
         print("╚" + "═" * 50 + "╝")
 
-class Historico(Midia):
+class Historico:
     def __init__(self):
         self.historico = []
 

@@ -20,7 +20,6 @@ class User:
         self.perfis = []
         self.plano = Plano("Gratuito", "R$ 0,00")
 
-    
     def adicionar_perfil(self, nome, controle_parental=False):
 
         if len(self.perfis) >= self.plano.maximo_perfis:

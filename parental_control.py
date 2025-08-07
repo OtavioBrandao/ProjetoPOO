@@ -43,4 +43,26 @@ def deactivate_parental_control(usuario):
             limpar_tela()
 
 def restringir_conteudo(usuario):
-    pass
+    if usuario.perfil.controle_parental is True:
+        print("Selecione até que idade você deseja restringir o conteúdo:")
+        print("Se você restringir até 10 por exemplo, o usuário não poderá ver conteúdos com classificação indicativa acima de 10 anos")
+        print("1. 10 anos")
+        print("2. 12 anos")
+        print("3. 14 anos")
+        print("4. 16 anos")
+        print("5. 18 anos")
+        opcao = input("Opção: ")
+        if opcao == 1:
+            idade_limite = 10
+        elif opcao == 2:
+            idade_limite = 12
+        elif opcao == 3:
+            idade_limite = 14
+        elif opcao == 4:
+            idade_limite = 16
+        elif opcao == 5:
+            idade_limite = 18
+        else:
+            print("Opção inválida. Tente novamente.")
+    else:
+        return

@@ -15,23 +15,23 @@ python main.py
 
 - 📚 **Consultar biblioteca de conteúdo** ✅
 - 👤 **Configurações de usuário** ✅
-- 🤖 **Recomendações personalizadas**
-- 📱 **Streaming em múltiplos dispositivos**
-- ⚡ **Otimização de banda larga**
-- ⭐ **Marcar conteúdo e histórico de visualização** (50% feito)
+- 🤖 **Recomendações personalizadas** ✅
+- 📱 **Streaming em múltiplos dispositivos** (Ainda não implementado)
+- ⚡ **Otimização de banda larga** (Ainda não implementado)
+- ⭐ **Marcar conteúdo e histórico de visualização** (Falta a parte de marcar conteúdo)
 - 📝 **Revisões e avaliações de conteúdo**
-- 📢 **Integração com anúncios**
-- 🔒 **Controle parental** ✅
+- 📢 **Integração com anúncios** (Ainda não implementado)
+- 🔒 **Controle parental** ✅ (Só é possível ativar/desativar ainda, mas falta a parte de restringir por idade)
 - 👥 **Gerenciamento de usuário** ✅
 
 ---
 
-## 📝 **Observações**
+## 📝 **Para fazer:**
 
-- 🔸 **Falta implementar a restrição de conteúdo no controle parental.**
-- 🔸 **Falta restringir conteúdo conforme o plano do usuário**
-- 🔸 **Adicionar uma forma de ver o pagamento enquanto aos planos**  
-  (Premium: sem restrições e sem anúncios).
+- 🔸 **Marcar conteúdo**
+- 🔸 **Terminar a função de restringir conteúdo**
+- 🔸 **Começar a parte de avaliar e reviews**
+- 🔸 **Adicionar encapsulamento**
 
 ---
 
