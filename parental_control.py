@@ -2,7 +2,7 @@
 from utility import limpar_tela
 import time
 
-def activate_parental_control(usuario):
+def select_profile_for_parental_control(usuario):
     while True:
         booleano = usuario.listar_perfis()
 
@@ -22,7 +22,7 @@ def activate_parental_control(usuario):
             time.sleep(2)
             limpar_tela()
 
-def deactivate_parental_control(usuario):
+def select_profile_for_not_parental_control(usuario):
     while True:
         booleano2 = usuario.listar_perfis()
 
@@ -36,6 +36,7 @@ def deactivate_parental_control(usuario):
 
         if perfil_encontrado:
             usuario.desativar_controle_parental(perfil_encontrado)
+            perfil_encontrado.idade_limite = 18  # Resetando a idade limite para o padrão
             break
         else:
             print("Perfil não encontrado. Verifique a sua escrita.\n")
@@ -43,26 +44,62 @@ def deactivate_parental_control(usuario):
             limpar_tela()
 
 def restringir_conteudo(usuario):
-    if usuario.perfil.controle_parental is True:
-        print("Selecione até que idade você deseja restringir o conteúdo:")
-        print("Se você restringir até 10 por exemplo, o usuário não poderá ver conteúdos com classificação indicativa acima de 10 anos")
-        print("1. 10 anos")
-        print("2. 12 anos")
-        print("3. 14 anos")
-        print("4. 16 anos")
-        print("5. 18 anos")
-        opcao = input("Opção: ")
-        if opcao == 1:
-            idade_limite = 10
-        elif opcao == 2:
-            idade_limite = 12
-        elif opcao == 3:
-            idade_limite = 14
-        elif opcao == 4:
-            idade_limite = 16
-        elif opcao == 5:
-            idade_limite = 18
-        else:
-            print("Opção inválida. Tente novamente.")
+    perfis_aptos = []
+
+    for perfil in usuario.perfis:
+        if perfil.controle_parental is True:
+            perfis_aptos.append(perfil)
+
+    if not perfis_aptos:
+        print("Nenhum perfil com controle parental ativo!")
+        return None
+
+    print("Perfis com controle parental:")
+    for i, p in enumerate(perfis_aptos, 1):
+        print(f"{i}. {p.nome_perfil}")
+
+    escolha = input("Digite o número do perfil a configurar: ")
+    if escolha.isdigit() and 1 <= int(escolha) <= len(perfis_aptos):
+        perfil = perfis_aptos[int(escolha) - 1]
     else:
-        return
+        print("Opção inválida.")
+        return None
+
+    print("Deseja personalizar a restrição ou manter a restrição padrão?")
+    print("1. Manter padrão")
+    print("2. Personalizar restrição")
+    escolher = input("Escolha uma opção (1-2): ")
+
+    if escolher == "1":
+        personalizar = False
+        perfil.idade_limite = 10 # Restrição padrão para crianças
+        print("Restrição padrão aplicada: 10 anos")
+    elif escolher == "2":
+        personalizar = True
+
+    if personalizar is True:
+
+        print("Selecione a idade máxima para restrição:")
+        print("1. 12 anos")
+        print("2. 14 anos")
+        print("3. 16 anos")
+        print("4. 18 anos")
+        try:
+            opcao = input("Escolha uma opção (1-4): ")
+
+            escolhas = {
+                "1": 12,
+                "2": 14,
+                "3": 16,
+                "4": 18
+            }
+
+            idade = escolhas[opcao]
+            perfil.idade_limite = idade
+            print(f"Idade limite escolhida: {idade}")
+
+        except KeyError:
+            print("Opção inválida. Tente novamente.")
+
+        except ValueError:
+            print("Entrada inválida. Por favor, digite um número.")

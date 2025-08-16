@@ -216,9 +216,9 @@ def todas_as_midias():
     midias.append(Documentario("Retratos Fantasmas", "Documentário", "10", 60))
     midias.append(Documentario("Explicando a mente", "Documentário", "10", 30))
     midias.append(Documentario("O Dilema das Redes", "Documentário", "12", 94))
-    midias.append(Documentario("Nosso Planeta", "Documentário", "L", 50))
-    midias.append(Documentario("O Começo da Vida", "Documentário", "L", 90))
-    midias.append(Documentario("Segunda Guerra Mundial em Cores", "Documentário", "L", 50))
+    midias.append(Documentario("Nosso Planeta", "Documentário", "10", 50))
+    midias.append(Documentario("O Começo da Vida", "Documentário", "10", 90))
+    midias.append(Documentario("Segunda Guerra Mundial em Cores", "Documentário", "10", 50))
 
     # Animação
     midias.append(Anime("Attack on Titan", "Animação", "16", 24, 75, 4))
@@ -277,7 +277,7 @@ def Explorar_Conteudo(usuario):
     if not continuar:
         return
     nome_perfil = input("Digite o nome do perfil: ")
-    perfil = usuario.obter_perfil_por_nome(nome_perfil) # É um objeto? ou algo diferente?
+    perfil = usuario.obter_perfil_por_nome(nome_perfil) 
     if perfil is None:
         print(f"Perfil '{nome_perfil}' não encontrado. Por favor, tente novamente.")
         return
@@ -286,6 +286,10 @@ def Explorar_Conteudo(usuario):
    
     for midia in todas_as_midias():
         catalogo.midias.append(midia)
+
+    # Filtro de idade
+    if perfil.controle_parental is True:
+        catalogo.midias = [midia for midia in catalogo.midias if int(midia.classificacao.rstrip('+')) <= perfil.idade_limite]
 
     while True:
         print("Biblioteca de Conteúdo:")

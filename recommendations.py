@@ -1,4 +1,7 @@
 # Personalized Recommendations: Offering personalized content recommendations based on user preferences
+import time
+
+
 class Recomendacoes:
     def __init__(self):
         #self.nome = nome (ver o que fazer com isso, se for usar o nome do filme aq)
@@ -13,9 +16,9 @@ class Recomendacoes:
         contador_animacao = contador_fantasia = contador_aventura = 0
 
         if not self.conteudos:
-            # Se a pessoa não asssitu nada ainda, vamos recomendar coisas aleatórias
-            #implementar função de recomendação aleatória
-            return "Recomendação aleatória: Assista algo novo!"
+            print("Assista algo para poder ter recomendações relacionadas ao seu gosto!")
+            time.sleep(2)
+            return
         else:
             for conteudo in self.conteudos:
                 if conteudo == "Ação":

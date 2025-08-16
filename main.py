@@ -1,6 +1,6 @@
 import time
 from user_management import User
-from parental_control import activate_parental_control, deactivate_parental_control
+from parental_control import select_profile_for_parental_control, select_profile_for_not_parental_control, restringir_conteudo
 from utility import limpar_tela
 from library_management import Explorar_Conteudo, Explorar_Conteudo_Convidado
 from bookmarking_and_history import ver_historico_de_exibicao, limpar_historico
@@ -9,6 +9,7 @@ from bookmarking_and_history import ver_historico_de_exibicao, limpar_historico
 # Video Streaming Service - Main Module
 
 usuarios_registrados = []  # Lista para armazenar usuários registrados
+
 
 def inicializar():
     limpar_tela()
@@ -174,7 +175,7 @@ def menu_config_usuario(usuario):
 
                     while True:
                         limpar_tela()
-                        outro_perfil = activate_parental_control(usuario)
+                        outro_perfil = select_profile_for_parental_control(usuario)
                         time.sleep(2)
                         if outro_perfil:
                             print("Deseja ativar o controle parental para outro perfil?" \
@@ -196,12 +197,12 @@ def menu_config_usuario(usuario):
                             break
                 elif escolha == "2":
                     limpar_tela()
-                    deactivate_parental_control(usuario)
+                    select_profile_for_not_parental_control(usuario)
                     time.sleep(2)
                     limpar_tela()
                 elif escolha == "3":
                     limpar_tela()
-                    print("Restrição de conteúdo ainda não implementada.")
+                    restringir_conteudo(usuario)
                     time.sleep(2)
                     limpar_tela()
                 elif escolha == "4":
@@ -256,7 +257,6 @@ def menu_principal(usuario=None):
     if usuario is None:
         usuario = fazer_login(usuarios_registrados)
     limpar_tela()
-
 
     print(f"Bem-vindo ao Video Streaming Service, {usuario.nome}!\n"
           "O que você gostaria de fazer?\n"
