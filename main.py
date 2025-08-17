@@ -4,18 +4,18 @@ from parental_control import select_profile_for_parental_control, select_profile
 from utility import limpar_tela
 from library_management import Explorar_Conteudo, Explorar_Conteudo_Convidado
 from bookmarking_and_history import ver_historico_de_exibicao, limpar_historico
- 
+from rating_and_reviews import Avaliacoes, processo_para_avaliar
 
 # Video Streaming Service - Main Module
 
 usuarios_registrados = []  # Lista para armazenar usuários registrados
-
+reviews = Avaliacoes()
 
 def inicializar():
     limpar_tela()
-    print("==========================")
-    print("VIDEO STREAMING SERVICE")
-    print("==========================")
+    print("═"*20)
+    print("STREAMING HUB")
+    print("═"*20)
 
 def criar_conta():
     print("Digite o nome do usuário:")
@@ -363,9 +363,7 @@ def menu_principal(usuario=None):
         limpar_tela()
         menu_principal(usuario)
     elif opcao == "7":
-        #implementar funcao revisoes_avaliacoes()
-        print("Não implementado\n")
-        time.sleep(2)
+        processo_para_avaliar(usuario, reviews)
         limpar_tela()
         menu_principal(usuario)
     elif opcao == "8":

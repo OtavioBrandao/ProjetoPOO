@@ -19,19 +19,18 @@ python main.py
 - 📱 **Streaming em múltiplos dispositivos** (Ainda não implementado)
 - ⚡ **Otimização de banda larga** (Ainda não implementado)
 - ⭐ **Marcar conteúdo e histórico de visualização** (Falta a parte de marcar conteúdo)
-- 📝 **Revisões e avaliações de conteúdo**
+- 📝 **Revisões e avaliações de conteúdo**✅
 - 📢 **Integração com anúncios** (Ainda não implementado)
-- 🔒 **Controle parental** ✅ (Só é possível ativar/desativar ainda, mas falta a parte de restringir por idade)
+- 🔒 **Controle parental** ✅ 
 - 👥 **Gerenciamento de usuário** ✅
 
 ---
 
 ## 📝 **Para fazer:**
-
+- 🔸 **Ver a forma de escolher o conteúdo para a parte de avaliação sem precisar ficar lembrando o nome, talvez pelo histórico**
 - 🔸 **Marcar conteúdo**
-- 🔸 **Terminar a função de restringir conteúdo**
 - 🔸 **Começar a parte de avaliar e reviews**
-- 🔸 **Adicionar encapsulamento**
+- 🔸 **Ver a possibilidade de adicionar encapsulamento e ver onde fazer isso**
 
 ---
 

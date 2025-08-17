@@ -47,7 +47,6 @@ class Midia(ABC):
     
     def assistir(self):
         limpar_tela()
-
         titulo = self.titulo.strip()
         titulo_centralizado = titulo.center(24)
         print("░▀▄░░▄▀")
@@ -62,7 +61,7 @@ class Midia(ABC):
         print("Obrigado por assistir!")
         time.sleep(2)
         limpar_tela()
-    
+
 class Filme(Midia):
     def exibir_informacoes(self):
         print("╔" + "═" * 50 + "╗")
@@ -150,7 +149,7 @@ class Historico:
     def limpar_historico(self):
         self.historico.clear()
         print("Seu histórico foi limpo com sucesso.")
-
+    
 def todas_as_midias():
     midias = []
 
