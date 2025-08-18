@@ -184,6 +184,7 @@ class Perfil:
         self.controle_parental = controle_parental
         self.recomendacoes = Recomendacoes()
         self.historico = Historico()
+        #self.marcado = Marcado()
         self.idade_limite = 18 # idade limite padrão
 
     def __str__(self):

@@ -14,7 +14,7 @@ reviews = Avaliacoes()
 def inicializar():
     limpar_tela()
     print("═"*20)
-    print("STREAMING HUB")
+    print("VSTREAMING HUB")
     print("═"*20)
 
 def criar_conta():
@@ -74,7 +74,7 @@ def fazer_login(usuarios_registrados):
         return fazer_login(usuarios_registrados)
 
 def menu_inicial():
-    print("Bem-vindo ao Video Streaming Service!\n")
+    print("Bem-vindo ao VStreamingHub!\n")
     print("Deseja criar uma conta ou fazer login?\n")
     print("===========================")
     print("1. Criar conta\n")
