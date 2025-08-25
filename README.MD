@@ -18,7 +18,7 @@ python main.py
 - 🤖 **Recomendações personalizadas** ✅
 - 📱 **Streaming em múltiplos dispositivos** (Ainda não implementado)
 - ⚡ **Otimização de banda larga** (Ainda não implementado)
-- ⭐ **Marcar conteúdo e histórico de visualização** (Falta a parte de marcar conteúdo)
+- ⭐ **Marcar conteúdo e histórico de visualização** ✅
 - 📝 **Revisões e avaliações de conteúdo**✅
 - 📢 **Integração com anúncios** (Ainda não implementado)
 - 🔒 **Controle parental** ✅ 
@@ -27,11 +27,11 @@ python main.py
 ---
 
 ## 📝 **Para fazer:**
-- 🔸 **Ver a forma de escolher o conteúdo para a parte de avaliação sem precisar ficar lembrando o nome, talvez pelo histórico**
-- 🔸 **Marcar conteúdo**
-- 🔸 **Começar a parte de avaliar e reviews**
+-
 - 🔸 **Ver a possibilidade de adicionar encapsulamento e ver onde fazer isso**
-
+- 🔸 **Corrigir erros de interface na parte do bookmarking (limpar tela e outros)**
+- 🔸 **Corrigir bugs visuais na seleção de mídia**
+- 🔸 **Começar otimização em banda larga**
 ---
 
 ## 🏗️ **Estrutura de Projeto**

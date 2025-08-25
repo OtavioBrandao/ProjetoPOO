@@ -296,10 +296,11 @@ def Explorar_Conteudo(usuario):
     print(f"Bem-vindo(a), {perfil.nome_perfil}!\n")
 
     catalogo = obter_catalogo_do_perfil(perfil)
-    # Filtro parental(está bugado)
+    
+    # Filtro parental
     if perfil.controle_parental:
-        catalogo.midias = [m for m in catalogo.midias if m.classificacao <= perfil.idade_limite]
-
+        catalogo.midias = [m for m in catalogo.midias if int(str(m.classificacao).rstrip('+')) <= perfil.idade_limite]
+    
     while True:
         print("Biblioteca de Conteúdo:")
         print("==========================")
