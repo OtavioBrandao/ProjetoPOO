@@ -59,8 +59,7 @@ class Marcar:
 
 # Função auxiliar para o bookmarking (basicamente repete a logica da função Explorar conteúdo)
 def montar_catalogo(perfil=None) -> ConjuntoMidias:
-    cat = ConjuntoMidias()
-    cat.midias.extend(todas_as_midias())
+    cat = perfil.catalogo
     # filtro parental
     if perfil and getattr(perfil, "controle_parental", False):
         cat.midias = [
@@ -68,7 +67,6 @@ def montar_catalogo(perfil=None) -> ConjuntoMidias:
             if int(str(m.classificacao).rstrip('+')) <= perfil.idade_limite
         ]
     return cat
-
 
 def bookmarking(usuario):
     print("Selecione um perfil:")
