@@ -8,7 +8,7 @@
 # Adicionar e remover perfis (dentro da conta)
 # Ativar/desativar controle parental por perfil
 from recommendations import Recomendacoes
-from library_management import Historico
+from bookmarking_and_history import Historico, Marcar
 import time
 from utility import limpar_tela
 
@@ -184,8 +184,9 @@ class Perfil:
         self.controle_parental = controle_parental
         self.recomendacoes = Recomendacoes()
         self.historico = Historico()
-        #self.marcado = Marcado()
+        self.marcar = Marcar()
         self.idade_limite = 18 # idade limite padrão
+        self.catalogo = None
 
     def __str__(self):
         return f"Perfil: {self.nome_perfil}, Controle Parental: {'Ativado' if self.controle_parental else 'Desativado'}"

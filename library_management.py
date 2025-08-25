@@ -4,6 +4,7 @@ import random
 from utility import limpar_tela, normalizar_texto
 import time
 from abc import ABC, abstractmethod
+import datetime
 
 class ConjuntoMidias:
     # Referente a varias midias
@@ -40,15 +41,30 @@ class Midia(ABC):
         self.genero = genero
         self.classificacao = classificacao
         self.tempo_duracao = tempo_duracao
+        self.assistido = False
+        self.ultima_exibicao = None
 
     @abstractmethod
     def exibir_informacoes(self):
         pass
-    
+
+    def configurar_visualizacao(self):
+        if self.assistido:
+            status = (
+                "✔️ Assistido "
+                f"(Última exibição: {self.ultima_exibicao.strftime('%d/%m/%Y %H:%M')})"
+            )
+        else:
+            status = "❌ Não Assistido"
+        return status
+
     def assistir(self):
         limpar_tela()
         titulo = self.titulo.strip()
         titulo_centralizado = titulo.center(24)
+        self.assistido = True
+        self.ultima_exibicao = datetime.datetime.now()
+
         print("░▀▄░░▄▀")
         print("▄▄▄██▄▄▄▄▄")
         print("█▒░▒░▒░█▀█ Assistindo:")
@@ -71,6 +87,7 @@ class Filme(Midia):
         print(f"║ Gênero: {self.genero:<40}║")
         print(f"║ Classificação: {self.classificacao:<32}║")
         print(f"║ Duração: {self.tempo_duracao} min{'':<31}║")
+        print(f"║ Status: {self.configurar_visualizacao()} {'':<31}║")
         print("╚" + "═" * 50 + "╝")
 
 class Serie(Midia):
@@ -89,6 +106,7 @@ class Serie(Midia):
         print(f"║ Duração média de episódios: {self.tempo_duracao} min{'':<31}║")
         print(f"║ Episódios: {self.episodios:<40}║")
         print(f"║ Temporadas: {self.temporadas:<38}║")
+        print(f"║ Status: {self.configurar_visualizacao()} {'':<31}║")
         print("╚" + "═" * 50 + "╝")
 
 class Documentario(Midia):
@@ -100,6 +118,7 @@ class Documentario(Midia):
         print(f"║ Gênero: {self.genero:<40}║")
         print(f"║ Classificação: {self.classificacao:<32}║")
         print(f"║ Duração: {self.tempo_duracao} min{'':<31}║")
+        print(f"║ Status: {self.configurar_visualizacao()} {'':<31}║")
         print("╚" + "═" * 50 + "╝")
 
 class Novela(Midia):
@@ -111,6 +130,7 @@ class Novela(Midia):
         print(f"║ Gênero: {self.genero:<40}║")
         print(f"║ Classificação: {self.classificacao:<32}║")
         print(f"║ Duração: {self.tempo_duracao} min{'':<31}║")
+        print(f"║ Status: {self.configurar_visualizacao()} {'':<31}║")
         print("╚" + "═" * 50 + "╝")
 
 class Anime(Midia):
@@ -128,27 +148,9 @@ class Anime(Midia):
         print(f"║ Duração média de episódios: {self.tempo_duracao} min{'':<31}║")
         print(f"║ Episódios: {self.episodios:<40}║")
         print(f"║ Temporadas: {self.temporadas:<38}║")
+        print(f"║ Status: {self.configurar_visualizacao()} {'':<31}║")
         print("╚" + "═" * 50 + "╝")
 
-class Historico:
-    def __init__(self):
-        self.historico = []
-
-    def adicionar_no_historico(self, midia):
-        self.historico.append(midia)
-
-    def exibir_historico(self):
-        if self.historico == []:
-            print("Seu histórico está vazio. Assista algum conteúdo primeiro.")
-        else:
-            print("Recém-reproduzidos:")
-
-            for midia in self.historico:
-                midia.exibir_informacoes()
-                
-    def limpar_historico(self):
-        self.historico.clear()
-        print("Seu histórico foi limpo com sucesso.")
     
 def todas_as_midias():
     midias = []
@@ -270,6 +272,17 @@ def todas_as_midias():
     
     return midias
 
+def obter_catalogo_do_perfil(perfil) -> ConjuntoMidias:
+    if perfil.catalogo is None:
+        cat = ConjuntoMidias()
+        midias = todas_as_midias()  # cria as instâncias UMA vez para este perfil
+        if getattr(perfil, "controle_parental", False):
+            midias = [m for m in midias if int(str(m.classificacao).rstrip('+')) <= perfil.idade_limite]
+        cat.midias.extend(midias)
+        perfil.catalogo = cat
+    return perfil.catalogo
+
+# Função principal para assistir o conteúdo
 def Explorar_Conteudo(usuario):
     print("Quem está assistindo?")
     continuar = usuario.listar_perfis()
@@ -281,14 +294,8 @@ def Explorar_Conteudo(usuario):
         print(f"Perfil '{nome_perfil}' não encontrado. Por favor, tente novamente.")
         return
     print(f"Bem-vindo(a), {perfil.nome_perfil}!\n")
-    catalogo = ConjuntoMidias()
-   
-    for midia in todas_as_midias():
-        catalogo.midias.append(midia)
 
-    # Filtro de idade
-    if perfil.controle_parental is True:
-        catalogo.midias = [midia for midia in catalogo.midias if int(midia.classificacao.rstrip('+')) <= perfil.idade_limite]
+    catalogo = obter_catalogo_do_perfil(perfil)
 
     while True:
         print("Biblioteca de Conteúdo:")

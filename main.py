@@ -3,7 +3,7 @@ from user_management import User
 from parental_control import select_profile_for_parental_control, select_profile_for_not_parental_control, restringir_conteudo
 from utility import limpar_tela
 from library_management import Explorar_Conteudo, Explorar_Conteudo_Convidado
-from bookmarking_and_history import ver_historico_de_exibicao, limpar_historico
+from bookmarking_and_history import ver_historico_de_exibicao, limpar_historico, bookmarking
 from rating_and_reviews import Avaliacoes, processo_para_avaliar
 
 # Video Streaming Service - Main Module
@@ -321,7 +321,7 @@ def menu_principal(usuario=None):
             print("==========================================")
             print("1. Ver histórico de exibição\n")
             print("2. Limpar histórico de exibição\n")
-            print("3. Marcar conteúdo\n")
+            print("3. Opções de Bookmarking\n")
             print("4. Voltar ao menu principal")
             print("==========================================")
             opcao_historico = input("Escolha uma opção (1-4):\n ")
@@ -355,7 +355,7 @@ def menu_principal(usuario=None):
                 limpar_tela()
                 continue
             elif opcao_historico == "3":
-                print("Marcação de conteúdo ainda não implementada.\n")
+                bookmarking(usuario)
                 input("Pressione Enter para continuar...")
                 limpar_tela()
             elif opcao_historico == "4":
