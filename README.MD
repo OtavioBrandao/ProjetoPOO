@@ -32,6 +32,7 @@ python main.py
 - 🔸 **Corrigir erros de interface na parte do bookmarking (limpar tela e outros)**
 - 🔸 **Corrigir bugs visuais na seleção de mídia**
 - 🔸 **Começar otimização em banda larga**
+
 ---
 
 ## 🏗️ **Estrutura de Projeto**

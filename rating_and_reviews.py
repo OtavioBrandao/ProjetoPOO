@@ -7,9 +7,9 @@ class Avaliacoes:
     def __init__(self):
         self.avaliacoes = []
 
-    def definir_avaliacao(self, usuario, conteudo, nota, comentario):
+    def definir_avaliacao(self, nome, conteudo, nota, comentario):
         avaliacao = {
-            "usuario": usuario,
+            "usuario": nome,
             "conteudo": conteudo,
             "nota": nota,
             "comentario": comentario
@@ -20,7 +20,7 @@ class Avaliacoes:
         print("Postar avaliação:")
         nota = int(input("Digite a nota (1 a 5): "))
         comentario = input("Digite seu comentário sobre o conteúdo: ")
-        self.definir_avaliacao(usuario, conteudo, nota, comentario)
+        self.definir_avaliacao(usuario.nome, conteudo, nota, comentario)
         print("Avaliação postada com sucesso!")
         time.sleep(2)
         limpar_tela()
@@ -71,8 +71,14 @@ def processo_para_avaliar(usuario, reviews):
             limpar_tela()
         elif opcao == "2":
             limpar_tela()
-            conteudo = input("Digite o nome do conteúdo que deseja avaliar: ")
-            reviews.postar_avaliacao(usuario.nome, conteudo)
+            if usuario.plano.nome != "Gratuito":
+                conteudo = input("Digite o nome do conteúdo que deseja avaliar: ")
+                reviews.postar_avaliacao(usuario, conteudo)
+            else:
+                print("Usuários no plano gratuito não podem postar reviews/avaliações.")
+                time.sleep(2)
+                limpar_tela()
+                continue
         elif opcao == "3":
             break
         else:

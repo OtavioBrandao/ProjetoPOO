@@ -58,15 +58,15 @@ class Marcar:
             midia.exibir_informacoes()
 
 # Função auxiliar para o bookmarking (basicamente repete a logica da função Explorar conteúdo)
-def montar_catalogo(perfil=None) -> ConjuntoMidias:
-    cat = perfil.catalogo
-    # filtro parental
-    if perfil and getattr(perfil, "controle_parental", False):
-        cat.midias = [
-            m for m in cat.midias
-            if int(str(m.classificacao).rstrip('+')) <= perfil.idade_limite
-        ]
-    return cat
+def obter_catalogo_do_perfil(perfil) -> ConjuntoMidias:
+    if perfil.catalogo is None:
+        cat = ConjuntoMidias()
+        midias = todas_as_midias()  # cria as instâncias UMA vez para este perfil
+        if getattr(perfil, "controle_parental", False):
+            midias = [m for m in midias if int(str(m.classificacao).rstrip('+')) <= perfil.idade_limite]
+        cat.midias.extend(midias)
+        perfil.catalogo = cat
+    return perfil.catalogo
 
 def bookmarking(usuario):
     print("Selecione um perfil:")
@@ -78,6 +78,8 @@ def bookmarking(usuario):
     if perfil is None:
         print(f"Perfil '{nome_perfil}' não encontrado. Por favor, tente novamente.")
         return
+
+    
     print("=======================================")
     print("O que deseja fazer?")
     print("1. Marcar conteúdo")
@@ -87,18 +89,18 @@ def bookmarking(usuario):
     acao = input("Digite o número da ação desejada: ")
 
     if acao == "1":
-        catalogo = montar_catalogo(perfil)
+        catalogo = obter_catalogo_do_perfil(perfil)
 
         while True:
             print("Digite o nome do conteúdo que deseja marcar:")
             titulo = input()
-            resultados = catalogo.buscar_por_titulo(titulo)
-
-            if not resultados:
-                print("Conteúdo não encontrado.")
+            try:
+                resultados = catalogo.buscar_por_titulo(titulo)
+            except Exception as e:
+                print(f"Ocorreu um erro ao buscar o conteúdo: {e}")
                 time.sleep(2)
                 limpar_tela()
-                continue
+                break
 
             print("\nConteúdos encontrados:\n")
             for idx, midia in enumerate(resultados):

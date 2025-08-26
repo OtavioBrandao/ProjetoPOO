@@ -224,7 +224,6 @@ class Plano:
             "Limite diário de conteúdos",
             "Anúncios frequentes",
             "5 perfis por conta",
-            "Avaliar conteúdo"
         ]
         self.anuncios = True
         self.limite_diario = True
@@ -260,6 +259,7 @@ class Plano:
             "15 perfis por conta",
             "Conteúdos em alta definição",
             "Streaming em múltiplos dispositivos"
+            "Reviews e avaliações de conteúdo"
         ]
         self.anuncios = False
         self.limite_diario = False
