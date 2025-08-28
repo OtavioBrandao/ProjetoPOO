@@ -63,19 +63,3 @@ class Recomendacoes:
             print("Recomendação: Fantasia")
         elif maximo == contador_aventura:
             print("Recomendação: Aventura")
-'''
-from collections import Counter
-
-class HistoricoDeVisualizacao:
-    def __init__(self):
-        self.generos = Counter()
-
-    def adicionar_genero(self, genero):
-        self.generos[genero] += 1
-
-    def genero_favorito(self):
-        if not self.generos:
-            return None
-        return self.generos.most_common(1)[0][0]  # Retorna o gênero mais visto
-Analisar como esse funciona e ver se vai ser melhor do que o de cima para a parte de recomendações
-'''

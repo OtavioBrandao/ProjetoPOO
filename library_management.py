@@ -57,8 +57,83 @@ class Midia(ABC):
         else:
             status = "❌ Não Assistido"
         return status
+    
+    def pular_30_segundos(self):
+        pass
 
-    def assistir(self):
+    def retomar_30_segundos(self):
+        pass
+
+    def central_anuncios(self):
+        pass
+
+    def contar_tempo(self):
+        pass
+
+    def assistir(self, usuario):
+        while True:
+            limpar_tela()
+            titulo = self.titulo.strip()
+            titulo_centralizado = titulo.center(24)
+
+            # marcação de estado
+            self.assistido = True
+            self.ultima_exibicao = datetime.datetime.now()
+
+            # avaliação de banda antes de começar
+            usuario.otimizacao_banda_larga.ajustar_qualidade()
+            usuario.otimizacao_banda_larga.exibir_configuracoes_qualidade()
+        
+            print()
+
+            print("░▀▄░░▄▀")
+            print("▄▄▄██▄▄▄▄▄")
+            print("█▒░▒░▒░█▀█ Assistindo:")
+            print(f"█░▒░▒░▒█▀█ {titulo_centralizado} ")
+            print("█▄▄▄▄▄▄███═════════════════════")
+            print()
+
+            print("Pressione Enter para pausar.")
+            input()
+            limpar_tela()
+
+            print("Conteúdo pausado. O que deseja fazer?")
+            escolha = input(
+                "1. Continuar assistindo\n"
+                "2. Mudar a qualidade de reprodução\n"
+                "3. Central de anúncios\n"
+                "4. Pular 30 segundos\n"
+                "5. Retomar 30 segundos\n"
+                "6. Parar de assistir\n"
+                "Escolha uma opção: "
+            ).strip()
+
+            if escolha == "1":
+                print("Retomando...")
+                time.sleep(1)
+                continue
+            elif escolha == "2":
+                usuario.otimizacao_banda_larga.mudar_qualidade()  
+            elif escolha == "3":
+                # self.central_anuncios()
+                pass
+            elif escolha == "4":
+                # self.pular_30_segundos()
+                pass
+            elif escolha == "5":
+                # self.retomar_30_segundos()
+                pass
+            elif escolha == "6":
+                print(f"\nVocê parou de assistir {self.titulo}.")
+                print("Obrigado por assistir!")
+                time.sleep(2)
+                limpar_tela()
+                break
+            else:
+                print("Opção inválida.")
+
+
+    def assistir_convidado(self):
         limpar_tela()
         titulo = self.titulo.strip()
         titulo_centralizado = titulo.center(24)
@@ -77,6 +152,7 @@ class Midia(ABC):
         print("Obrigado por assistir!")
         time.sleep(2)
         limpar_tela()
+
 
 class Filme(Midia):
     def exibir_informacoes(self):
@@ -359,7 +435,7 @@ def Explorar_Conteudo(usuario):
                 indice = int(escolha_conteudo) - 1
                 if 0 <= indice < len(resultados):
                     conteudo_escolhido = resultados[indice]
-                    conteudo_escolhido.assistir()
+                    conteudo_escolhido.assistir(usuario)
                     perfil.historico.adicionar_no_historico(conteudo_escolhido)
                     perfil.recomendacoes.adicionar_conteudo(conteudo_escolhido.genero)
                 else:
@@ -421,7 +497,7 @@ def Explorar_Conteudo_Convidado():
                 indice = int(escolha_conteudo) - 1
                 if 0 <= indice < len(resultados_limitados):
                     conteudo_escolhido = resultados_limitados[indice]
-                    conteudo_escolhido.assistir()
+                    conteudo_escolhido.assistir_convidado()
                 else:
                     print("Opção inválida.")
             else:

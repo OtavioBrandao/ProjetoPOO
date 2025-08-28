@@ -79,7 +79,6 @@ def bookmarking(usuario):
         print(f"Perfil '{nome_perfil}' não encontrado. Por favor, tente novamente.")
         return
 
-    
     print("=======================================")
     print("O que deseja fazer?")
     print("1. Marcar conteúdo")

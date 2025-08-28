@@ -17,7 +17,7 @@ python main.py
 - 👤 **Configurações de usuário** ✅
 - 🤖 **Recomendações personalizadas** ✅
 - 📱 **Streaming em múltiplos dispositivos** (Ainda não implementado)
-- ⚡ **Otimização de banda larga** (Ainda não implementado)
+- ⚡ **Otimização de banda larga** ✅
 - ⭐ **Marcar conteúdo e histórico de visualização** ✅
 - 📝 **Revisões e avaliações de conteúdo**✅
 - 📢 **Integração com anúncios** (Ainda não implementado)
@@ -31,7 +31,7 @@ python main.py
 - 🔸 **Ver a possibilidade de adicionar encapsulamento e ver onde fazer isso**
 - 🔸 **Corrigir erros de interface na parte do bookmarking (limpar tela e outros)**
 - 🔸 **Corrigir bugs visuais na seleção de mídia**
-- 🔸 **Começar otimização em banda larga**
+- 🔸 **Ajustes na banda larga**
 
 ---
 

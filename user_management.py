@@ -9,6 +9,7 @@
 # Ativar/desativar controle parental por perfil
 from recommendations import Recomendacoes
 from bookmarking_and_history import Historico, Marcar
+from bandwidth_optimization import BandaLarga
 import time
 from utility import limpar_tela
 
@@ -19,7 +20,8 @@ class User:
         self.senha = senha
         self.perfis = []
         self.plano = Plano("Gratuito", "R$ 0,00")
-
+        #self.anuncios = 
+        self.otimizacao_banda_larga = BandaLarga()
     def adicionar_perfil(self, nome, controle_parental=False):
 
         if len(self.perfis) >= self.plano.maximo_perfis:
