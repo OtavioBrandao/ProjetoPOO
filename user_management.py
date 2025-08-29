@@ -22,6 +22,7 @@ class User:
         self.plano = Plano("Gratuito", "R$ 0,00")
         #self.anuncios = 
         self.otimizacao_banda_larga = BandaLarga()
+        self.conteudos_vistos = 0
     def adicionar_perfil(self, nome, controle_parental=False):
 
         if len(self.perfis) >= self.plano.maximo_perfis:
@@ -199,16 +200,17 @@ class Plano:
         self.preco = preco
         self.beneficios = []
         self.anuncios = True 
-        self.limite_diario = True
+        self.limite_diario = 10
         self.alta_definicao = False
         self.multiplos_dispositivos = False
         self.reviews = False
+        self.recomendacoes_personalizadas = False
         self.maximo_perfis = 5
         self.beneficios = [
             "Limite diário de conteúdos",
             "Anúncios frequentes",
             "5 perfis por conta",
-            "Avaliar conteúdo"
+            "Não pode Avaliar conteúdo"
         ]
 
     def __str__(self):
@@ -228,11 +230,12 @@ class Plano:
             "5 perfis por conta",
         ]
         self.anuncios = True
-        self.limite_diario = True
+        self.limite_diario = 10
         self.alta_definicao = False
         self.multiplos_dispositivos = False
         self.reviews = False
         self.maximo_perfis = 5
+        self.recomendacoes_personalizadas = False
 
     def plano_basico(self):
         self.nome = "Básico"
@@ -245,11 +248,12 @@ class Plano:
             "Reviews e avaliações de conteúdo"
         ]
         self.anuncios = True
-        self.limite_diario = False
+        self.limite_diario = 99999
         self.alta_definicao = False
         self.multiplos_dispositivos = False
         self.reviews = True
         self.maximo_perfis = 10
+        self.recomendacoes_personalizadas = True
 
     def plano_premium(self):
         self.nome = "Premium"
@@ -260,15 +264,16 @@ class Plano:
             "Recomendações personalizadas",
             "15 perfis por conta",
             "Conteúdos em alta definição",
-            "Streaming em múltiplos dispositivos"
+            "Streaming em múltiplos dispositivos",
             "Reviews e avaliações de conteúdo"
         ]
         self.anuncios = False
-        self.limite_diario = False
+        self.limite_diario = 99999
         self.alta_definicao = True
         self.multiplos_dispositivos = True
         self.reviews = True
         self.maximo_perfis = 15
+        self.recomendacoes_personalizadas = True
 
     def realizar_pagamento(self, nome_plano):
         planos_disponiveis = ["Básico", "Premium"]

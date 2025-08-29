@@ -10,13 +10,17 @@ class Recomendacoes:
     def adicionar_conteudo(self, nome):
         self.conteudos.append(nome)
 
-    def recomendar_conteudo(self):
+    def recomendar_conteudo(self, usuario):
         contador_acao = contador_comedia = contador_drama = 0
         contador_romance = contador_terror = contador_documentario = 0
         contador_animacao = contador_fantasia = contador_aventura = 0
 
         if not self.conteudos:
             print("Assista algo para poder ter recomendações relacionadas ao seu gosto!")
+            time.sleep(2)
+            return
+        elif usuario.plano.recomendacoes_personalizadas is False:
+            print("Recomendações personalizadas estão desativadas para o plano gratuito. Faça um upgrade no seu plano!")
             time.sleep(2)
             return
         else:

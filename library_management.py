@@ -43,6 +43,7 @@ class Midia(ABC):
         self.tempo_duracao = tempo_duracao
         self.assistido = False
         self.ultima_exibicao = None
+        
 
     @abstractmethod
     def exibir_informacoes(self):
@@ -71,6 +72,14 @@ class Midia(ABC):
         pass
 
     def assistir(self, usuario):
+        usuario.conteudos_vistos += 1
+        if usuario.plano.limite_diario < usuario.conteudos_vistos:
+            print("Limite diário de visualizações atingido. Assista um anúncio para redefinir esse limite.")
+            time.sleep(2)
+            limpar_tela()
+            #Implementar pra brotar um anuncio aleatorio aq tbm
+            return
+        
         while True:
             limpar_tela()
             titulo = self.titulo.strip()
@@ -81,7 +90,7 @@ class Midia(ABC):
             self.ultima_exibicao = datetime.datetime.now()
 
             # avaliação de banda antes de começar
-            usuario.otimizacao_banda_larga.ajustar_qualidade()
+            usuario.otimizacao_banda_larga.ajustar_qualidade(usuario)
             usuario.otimizacao_banda_larga.exibir_configuracoes_qualidade()
         
             print()
@@ -113,7 +122,7 @@ class Midia(ABC):
                 time.sleep(1)
                 continue
             elif escolha == "2":
-                usuario.otimizacao_banda_larga.mudar_qualidade()  
+                usuario.otimizacao_banda_larga.mudar_qualidade(usuario)  
             elif escolha == "3":
                 # self.central_anuncios()
                 pass
@@ -157,7 +166,7 @@ class Midia(ABC):
 class Filme(Midia):
     def exibir_informacoes(self):
         print("╔" + "═" * 50 + "╗")
-        print(f"║ 🎬  {self.titulo:<42}║")
+        print(f"║ 🎬  {self.titulo:<42}║") 
         print("╠" + "═" * 50 + "╣")
         print(f"║ Tipo: Filme{'':<42}║")
         print(f"║ Gênero: {self.genero:<40}║")
@@ -435,6 +444,7 @@ def Explorar_Conteudo(usuario):
                 indice = int(escolha_conteudo) - 1
                 if 0 <= indice < len(resultados):
                     conteudo_escolhido = resultados[indice]
+                    usuario.otimizacao_banda_larga.auto_ajuste = True
                     conteudo_escolhido.assistir(usuario)
                     perfil.historico.adicionar_no_historico(conteudo_escolhido)
                     perfil.recomendacoes.adicionar_conteudo(conteudo_escolhido.genero)

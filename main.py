@@ -13,9 +13,9 @@ reviews = Avaliacoes()
 
 def inicializar():
     limpar_tela()
-    print("═"*20)
-    print("VSTREAMING HUB")
-    print("═"*20)
+    print("╔" + "═" * 20 + "╗")
+    print("║  VSTREAMING HUB    ║")
+    print("╚" + "═" * 20 + "╝")
 
 def criar_conta():
     print("Digite o nome do usuário:")
@@ -74,14 +74,18 @@ def fazer_login(usuarios_registrados):
         return fazer_login(usuarios_registrados)
 
 def menu_inicial():
-    print("Bem-vindo ao VStreamingHub!\n")
+    print("╔══════════════════════════════╗")
+    print("║ Bem-vindo ao VStreamingHub!  ║")
+    print("╚══════════════════════════════╝\n")
+
     print("Deseja criar uma conta ou fazer login?\n")
-    print("===========================")
-    print("1. Criar conta\n")
-    print("2. Fazer login\n")
-    print("3. Continuar como convidado\n")
-    print("4. Sair")
-    print("===========================")
+
+    print("╔══════════════════════════════╗")
+    print("║ 1. Criar conta               ║")
+    print("║ 2. Fazer login               ║")
+    print("║ 3. Continuar como convidado  ║")
+    print("║ 4. Sair                      ║")
+    print("╚══════════════════════════════╝")
 
     opcao = input("Escolha uma opção (1-4):\n ")
     if opcao == "1":
@@ -261,19 +265,18 @@ def menu_principal(usuario=None):
     print(f"Bem-vindo ao Video Streaming Service, {usuario.nome}!\n"
           "O que você gostaria de fazer?\n"
           )
-    print("==============================================")
-    print("1. Consultar biblioteca de conteúdo\n")
-    print("2. Configurações de usuário\n")
-    print("3. Recomendações personalizadas\n")
-    print("4. Streaming em múltiplos dispositivos\n")
-    print("5. Otimização de banda larga\n")
-    print("6. Marcar conteúdo e histórico de visualização\n")
-    print("7. Revisões e avaliações de conteúdo\n")
-    print("8. Integração com anúncios\n")
-    print("9. Logout")
-    print("==============================================")
+    print("╔" + "═" * 50 + "╗")
+    print("  1. 🎬 Consultar biblioteca de conteúdo")
+    print("  2. ⚙️ Configurações de usuário")
+    print("  3. ⭐ Recomendações personalizadas")
+    print("  4. 📺 Streaming em múltiplos dispositivos")
+    print("  5. 📚 Marcar conteúdo e histórico de visualização")
+    print("  6. 📝 Revisões e avaliações de conteúdo")
+    print("  7. 📢 Integração com anúncios")
+    print("  8. 🚪 Logout")
+    print("╚" + "═" * 50 + "╝")
 
-    opcao = input("Escolha uma opção (1-9):\n ")
+    opcao = input("Escolha uma opção (1-8):\n ")
 
     if opcao == "1":
         limpar_tela()
@@ -295,7 +298,7 @@ def menu_principal(usuario=None):
         perfil = usuario.obter_perfil_por_nome(nome_perfil)
 
         if perfil:
-            perfil.recomendacoes.recomendar_conteudo()
+            perfil.recomendacoes.recomendar_conteudo(usuario)
         else:
             print("Perfil não encontrado.")
 
@@ -308,13 +311,8 @@ def menu_principal(usuario=None):
         time.sleep(2)
         limpar_tela()
         menu_principal(usuario)
+
     elif opcao == "5":
-        #implementar funcao otimizacao_banda_larga()
-        print("Não implementado\n")
-        time.sleep(2)
-        limpar_tela()
-        menu_principal(usuario)
-    elif opcao == "6":
         limpar_tela()
         while True:
             print("Marcação de conteúdo e histórico de visualização:\n")
@@ -362,17 +360,17 @@ def menu_principal(usuario=None):
                 break   
         limpar_tela()
         menu_principal(usuario)
-    elif opcao == "7":
+    elif opcao == "6":
         processo_para_avaliar(usuario, reviews)
         limpar_tela()
         menu_principal(usuario)
-    elif opcao == "8":
+    elif opcao == "7":
         #implementar funcao integracao_anuncios()
         print("Não implementado\n")
         time.sleep(2)
         limpar_tela()
         menu_principal(usuario)
-    elif opcao == "9":
+    elif opcao == "8":
         limpar_tela()
         print("Você escolheu sair.\n")
         print("Tem certeza de que deseja sair?\n"

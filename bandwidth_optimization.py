@@ -11,43 +11,62 @@ class BandaLarga:
     def detectar_velocidade(self):
         return round(random.uniform(0.5, 300), 2) # Retorna um valor aleatório de velocidade de internet
     
-    def ajustar_qualidade(self):
-        self.auto_ajuste = True
-        self.velocidade_mbps = self.detectar_velocidade()
-        if self.velocidade_mbps < 0.7:
-            print("Mudando para 144p devido à baixa velocidade.")
-            self.qualidade_video = "144p"
-        elif self.velocidade_mbps < 1.5:
-            print("Mudando para 240p devido à baixa velocidade.")
-            self.qualidade_video = "240p"
-        elif self.velocidade_mbps < 3:
-            print("Mudando para 360p devido à baixa velocidade.")
-            self.qualidade_video = "360p"
-        elif self.velocidade_mbps < 5:
-            print("Mudando para 480p devido à baixa velocidade.")
-            self.qualidade_video = "480p"
-        elif self.velocidade_mbps < 10:
-            print("Mudando para 720p devido à média velocidade.")
-            self.qualidade_video = "720p"
-        elif self.velocidade_mbps < 25:
-            print("Mudando para 1080p devido à alta velocidade.")
-            self.qualidade_video = "1080p"
-        else:
-            print("Conexão excelente! Mudando para 4K.")
-            self.qualidade_video = "4K"
+    def ajustar_qualidade(self, usuario):
+        if self.auto_ajuste is True:
+            self.velocidade_mbps = self.detectar_velocidade()
+            if self.velocidade_mbps < 0.7:
+                print("Mudando para 144p devido à baixa velocidade.")
+                self.qualidade_video = "144p"
+            elif self.velocidade_mbps < 1.5:
+                print("Mudando para 240p devido à baixa velocidade.")
+                self.qualidade_video = "240p"
+            elif self.velocidade_mbps < 3:
+                print("Mudando para 360p devido à baixa velocidade.")
+                self.qualidade_video = "360p"
+            elif self.velocidade_mbps < 5:
+                print("Mudando para 480p devido à baixa velocidade.")
+                self.qualidade_video = "480p"
+            elif self.velocidade_mbps < 10:
+                print("Mudando para 720p devido à média velocidade.")
+                self.qualidade_video = "720p"
+            elif self.velocidade_mbps < 25:
+                print("Mudando para 1080p devido à alta velocidade.")
+                self.qualidade_video = "1080p"
+            else:
+                if usuario.plano.nome == "Premium":
+                    print("Conexão excelente! Mudando para 4K.")
+                    self.qualidade_video = "4K"
+                else:
+                    print("Conexão excelente! Mudando para 1080p.")
+                    self.qualidade_video = "1080p"
 
-    def mudar_qualidade(self):
+    def mudar_qualidade(self, usuario):
         # Mudar manualmente para a qualidade que eu quiser. Se tentar mudar para resoluções altas com conexão ruim, haverá travamentos
         try: 
             self.auto_ajuste = False
-            qualidades_validas = ["144p", "240p", "360p", "480p", "720p", "1080p", "4K"]
-            print("As qualidades válidas são:", ", ".join(qualidades_validas))
-            print("Digite a qualidade desejada para confirmar a mudança manual:")
-            nova_qualidade = input()
-            if nova_qualidade in qualidades_validas:
-                self.qualidade_video = nova_qualidade
+
+            qualidades_validas = ["144p", "240p", "360p", "480p", "720p", "1080p"]
+            qualidades_validas_premium = ["144p", "240p", "360p", "480p", "720p", "1080p", "4K"]
+
+            if usuario.plano.nome == "Premium":
+                usuario.plano.alta_definicao = True
+                print("As qualidades válidas são:", ", ".join(qualidades_validas_premium))
+                print("Digite a qualidade desejada para confirmar a mudança manual:")
+                nova_qualidade = input()
+                if nova_qualidade in qualidades_validas_premium:
+                    self.qualidade_video = nova_qualidade
+                else:
+                    print("Qualidade inválida. Escolha entre: 144p, 240p, 360p, 480p, 720p, 1080p, 4K.")
+
             else:
-                print("Qualidade inválida. Escolha entre: 144p, 240p, 360p, 480p, 720p, 1080p, 4K.")
+                usuario.plano.alta_definicao = False
+                print("As qualidades válidas são:", ", ".join(qualidades_validas))
+                print("Digite a qualidade desejada para confirmar a mudança manual:")
+                nova_qualidade = input()
+                if nova_qualidade in qualidades_validas:
+                    self.qualidade_video = nova_qualidade
+                else:
+                    print("Qualidade inválida. Escolha entre: 144p, 240p, 360p, 480p, 720p, 1080p.")
 
         except:
             print("Qualidade inválida! Continua na configuração anterior.")
