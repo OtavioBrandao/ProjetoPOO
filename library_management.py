@@ -5,6 +5,7 @@ from utility import limpar_tela, normalizar_texto
 import time
 from abc import ABC, abstractmethod
 import datetime
+from ads_management import realizar_exibicao_anuncio
 
 class ConjuntoMidias:
     # Referente a varias midias
@@ -65,7 +66,7 @@ class Midia(ABC):
     def retomar_30_segundos(self):
         pass
 
-    def central_anuncios(self):
+    def central_anuncios(self, usuario):
         pass
 
     def contar_tempo(self):
@@ -77,7 +78,7 @@ class Midia(ABC):
             print("Limite diário de visualizações atingido. Assista um anúncio para redefinir esse limite.")
             time.sleep(2)
             limpar_tela()
-            #Implementar pra brotar um anuncio aleatorio aq tbm
+            
             return
         
         while True:
@@ -101,19 +102,21 @@ class Midia(ABC):
             print(f"█░▒░▒░▒█▀█ {titulo_centralizado} ")
             print("█▄▄▄▄▄▄███═════════════════════")
             print()
-
-            print("Pressione Enter para pausar.")
-            input()
-            limpar_tela()
+            # A cada alguns segundos, tentar exibir um anuncio
+            if usuario.plano.nome != "Premium":
+                anuncio = realizar_exibicao_anuncio(usuario)
+                if anuncio is True:
+                    print("Pressione Enter para continuar.")
+                    continue
+            else:
+                input("Pressione Enter para parar de assistir.")
+                limpar_tela()
 
             print("Conteúdo pausado. O que deseja fazer?")
             escolha = input(
                 "1. Continuar assistindo\n"
                 "2. Mudar a qualidade de reprodução\n"
-                "3. Central de anúncios\n"
-                "4. Pular 30 segundos\n"
-                "5. Retomar 30 segundos\n"
-                "6. Parar de assistir\n"
+                "3. Parar de assistir\n"
                 "Escolha uma opção: "
             ).strip()
 
@@ -123,16 +126,8 @@ class Midia(ABC):
                 continue
             elif escolha == "2":
                 usuario.otimizacao_banda_larga.mudar_qualidade(usuario)  
+                
             elif escolha == "3":
-                # self.central_anuncios()
-                pass
-            elif escolha == "4":
-                # self.pular_30_segundos()
-                pass
-            elif escolha == "5":
-                # self.retomar_30_segundos()
-                pass
-            elif escolha == "6":
                 print(f"\nVocê parou de assistir {self.titulo}.")
                 print("Obrigado por assistir!")
                 time.sleep(2)

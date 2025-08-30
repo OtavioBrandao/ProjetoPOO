@@ -267,13 +267,12 @@ def menu_principal(usuario=None):
           )
     print("╔" + "═" * 50 + "╗")
     print("  1. 🎬 Consultar biblioteca de conteúdo")
-    print("  2. ⚙️ Configurações de usuário")
+    print("  2. ⚙️  Configurações de usuário")
     print("  3. ⭐ Recomendações personalizadas")
     print("  4. 📺 Streaming em múltiplos dispositivos")
     print("  5. 📚 Marcar conteúdo e histórico de visualização")
     print("  6. 📝 Revisões e avaliações de conteúdo")
-    print("  7. 📢 Integração com anúncios")
-    print("  8. 🚪 Logout")
+    print("  7. 🚪 Logout")
     print("╚" + "═" * 50 + "╝")
 
     opcao = input("Escolha uma opção (1-8):\n ")
@@ -364,13 +363,8 @@ def menu_principal(usuario=None):
         processo_para_avaliar(usuario, reviews)
         limpar_tela()
         menu_principal(usuario)
+
     elif opcao == "7":
-        #implementar funcao integracao_anuncios()
-        print("Não implementado\n")
-        time.sleep(2)
-        limpar_tela()
-        menu_principal(usuario)
-    elif opcao == "8":
         limpar_tela()
         print("Você escolheu sair.\n")
         print("Tem certeza de que deseja sair?\n"
