@@ -54,7 +54,7 @@ class GerenciarAnuncio:
         return exibido
 
 
-
+        
 
 
 def criar_banco_de_anuncios():
@@ -83,5 +83,16 @@ def realizar_exibicao_anuncio(usuario):
     anuncio = GerenciarAnuncio()
     return anuncio.exibir_anuncio(usuario, banco_ads)
 
+def redefinir_limite_diario(usuario):
+        banco_ads = criar_banco_de_anuncios()
+        ad = random.choice(banco_ads)
+        limpar_tela()
+        print("╔" + "═" * 50 + "╗")
+        print(" 📢  ANÚNCIO ESPECIAL")
+        print(f" Nome: {ad.nome:<41}")
+        print(f" Produto: {ad.produto:<38}")
+        print(f" Descrição: {ad.descricao:<35}")
+        print("╚" + "═" * 50 + "╝\n")
+        usuario.conteudos_vistos = 0
 
 

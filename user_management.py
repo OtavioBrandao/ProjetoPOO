@@ -12,6 +12,7 @@ from bookmarking_and_history import Historico, Marcar
 from bandwidth_optimization import BandaLarga
 import time
 from utility import limpar_tela
+from multi_device import StreamingSession
 
 class User:
     def __init__(self, nome, email, senha):
@@ -20,9 +21,11 @@ class User:
         self.senha = senha
         self.perfis = []
         self.plano = Plano("Gratuito", "R$ 0,00")
-        #self.anuncios = 
+        self.multiplo_streaming = StreamingSession(self)
         self.otimizacao_banda_larga = BandaLarga()
         self.conteudos_vistos = 0
+        self.ultimo_conteudo_assistido = None
+
     def adicionar_perfil(self, nome, controle_parental=False):
 
         if len(self.perfis) >= self.plano.maximo_perfis:
@@ -84,11 +87,11 @@ class User:
                 print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
                 self.plano.exibir_beneficios()
                 print("\nOpções de Gerenciamento de Plano:")
-                print("=========================")
+                print("╔" + "═" * 50 + "╗")
                 print("1. Mudar para Básico")
                 print("2. Mudar para Premium")
                 print("3. Voltar ao menu de configurações")
-                print("=========================")
+                print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
                     self.plano.realizar_pagamento("Básico")
@@ -108,11 +111,11 @@ class User:
                 print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
                 self.plano.exibir_beneficios()
                 print("\nOpções de Gerenciamento de Plano:")
-                print("=========================")
+                print("╔" + "═" * 50 + "╗")
                 print("1. Mudar para Premium")
                 print("2. Cancelar Plano")
                 print("3. Voltar ao menu de configurações")
-                print("=========================")
+                print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
                     self.plano.realizar_pagamento("Premium")
@@ -135,10 +138,10 @@ class User:
                 print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
                 self.plano.exibir_beneficios()
                 print("\nOpções de Gerenciamento de Plano:")
-                print("=========================")
+                print("╔" + "═" * 50 + "╗")
                 print("1. Cancelar Plano")
                 print("2. Voltar ao menu de configurações")
-                print("=========================")
+                print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
                     self.plano.cancelar_plano()

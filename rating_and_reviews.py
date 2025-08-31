@@ -52,11 +52,11 @@ def processo_para_avaliar(usuario, reviews):
     while True:
         limpar_tela()
         print("O que deseja fazer?")
-        print("═" * 35)
+        print("╔" + "═" * 50 + "╗")
         print("1. Ver avaliações e reviews\n")
         print("2. Fazer uma Review/Avaliação\n")
         print("3. Voltar ao menu principal")
-        print("═" * 35)
+        print("╚" + "═" * 50 + "╝")
         opcao = input("Digite a opção desejada: ")
 
         if opcao == "1":

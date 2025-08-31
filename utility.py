@@ -1,4 +1,4 @@
-# Benefícios de plano (fazer as funções para o que cada plano pode fazer)
+
 import os
 import sys
 import unicodedata

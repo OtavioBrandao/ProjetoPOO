@@ -5,7 +5,7 @@ from utility import limpar_tela, normalizar_texto
 import time
 from abc import ABC, abstractmethod
 import datetime
-from ads_management import realizar_exibicao_anuncio
+from ads_management import realizar_exibicao_anuncio, redefinir_limite_diario
 
 class ConjuntoMidias:
     # Referente a varias midias
@@ -59,28 +59,23 @@ class Midia(ABC):
         else:
             status = "❌ Não Assistido"
         return status
-    
-    def pular_30_segundos(self):
-        pass
-
-    def retomar_30_segundos(self):
-        pass
-
-    def central_anuncios(self, usuario):
-        pass
-
-    def contar_tempo(self):
-        pass
 
     def assistir(self, usuario):
         usuario.conteudos_vistos += 1
         if usuario.plano.limite_diario < usuario.conteudos_vistos:
             print("Limite diário de visualizações atingido. Assista um anúncio para redefinir esse limite.")
-            time.sleep(2)
-            limpar_tela()
-            
-            return
-        
+            print("Deseja assistir o anuncio? (s/n)")
+            resposta = input().strip().lower()
+            if resposta == "s":
+                time.sleep(2)
+                limpar_tela()
+                redefinir_limite_diario(usuario)
+                print("Limite redefinido com sucesso!")
+                time.sleep(2)
+                limpar_tela()
+            else:
+                return 
+
         while True:
             limpar_tela()
             titulo = self.titulo.strip()
@@ -89,6 +84,7 @@ class Midia(ABC):
             # marcação de estado
             self.assistido = True
             self.ultima_exibicao = datetime.datetime.now()
+            usuario.ultimo_conteudo_assistido = self.titulo
 
             # avaliação de banda antes de começar
             usuario.otimizacao_banda_larga.ajustar_qualidade(usuario)
@@ -383,13 +379,13 @@ def Explorar_Conteudo(usuario):
     
     while True:
         print("Biblioteca de Conteúdo:")
-        print("==========================")
+        print("╔" + "═" * 50 + "╗")
         print("1. Buscar por Título")
         print("2. Buscar por Gênero")
         print("3. Navegar pela Biblioteca")
         print("4. Selecionar conteúdo para assistir")
         print("5. Sair")
-        print("==========================")
+        print("╚" + "═" * 50 + "╝")
         escolha = input("Escolha uma opção: ")
 
         if escolha == "1":
@@ -465,11 +461,11 @@ def Explorar_Conteudo_Convidado():
 
     while True:
         print("Biblioteca de Conteúdo:")
-        print("==========================")
+        print("╔" + "═" * 50 + "╗")
         print("1. Navegar pela Biblioteca")
         print("2. Selecionar conteúdo para assistir")
         print("3. Sair")
-        print("==========================")
+        print("╚" + "═" * 50 + "╝")
         escolha = input("Escolha uma opção: ")
 
         if escolha == "1":

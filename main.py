@@ -6,6 +6,7 @@ from library_management import Explorar_Conteudo, Explorar_Conteudo_Convidado
 from bookmarking_and_history import ver_historico_de_exibicao, limpar_historico, bookmarking
 from rating_and_reviews import Avaliacoes, processo_para_avaliar
 
+
 # Video Streaming Service - Main Module
 
 usuarios_registrados = []  # Lista para armazenar usuários registrados
@@ -113,12 +114,12 @@ def menu_inicial():
 def menu_config_usuario(usuario):
     while True:
         print("Configurações de usuário:\n")
-        print("==========================================")
+        print("╔" + "═" * 50 + "╗")
         print("1. Gerenciar meus perfis\n")
         print("2. Gerenciar meu plano de assinatura\n")
         print("3. Configurações de controle parental\n")
         print("4. Voltar ao menu principal")
-        print("==========================================")
+        print("╚" + "═" * 50 + "╝")
 
         opcao_usuario = input("Escolha uma opção (1-4):\n ")
         
@@ -127,9 +128,11 @@ def menu_config_usuario(usuario):
             limpar_tela()
             if usuario.listar_perfis():
                 print("Deseja adicionar ou remover um perfil?")
+                print("╔" + "═" * 50 + "╗")
                 print("1. Adicionar perfil")
                 print("2. Remover perfil")
                 print("3. Voltar ao menu de configurações")
+                print("╚" + "═" * 50 + "╝")
                 escolha_perfil = input("Escolha uma opção (1-3):\n ")
 
                 if escolha_perfil == "1":
@@ -165,13 +168,13 @@ def menu_config_usuario(usuario):
 
             while True:
                 print("Configurações de Controle Parental:\n")
-                print("==========================================")
+                print("╔" + "═" * 50 + "╗")
                 print("Você pode ativar o controle parental para um perfil existente ou restringir conteúdo.")
                 print("1. Ativar controle parental")
                 print("2. Desativar controle parental")
                 print("3. Restrição de conteúdo")
                 print("4. Voltar ao menu de configurações")
-                print("==========================================")
+                print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção (1-4):\n ")
 
                 if escolha == "1":
@@ -230,10 +233,10 @@ def menu_principal_convidado():
           "Você pode explorar o conteúdo, porém o resto das funcionalidades estão limitadas. Crie uma conta para ter acesso completo aos nossos serviços.\n"
           "O que você gostaria de fazer?\n"
           )
-    print("==============================================")
+    print("╔" + "═" * 50 + "╗")
     print("1. Consultar biblioteca de conteúdo\n")
     print("2. Voltar ao menu inicial")
-    print("==============================================")
+    print("╚" + "═" * 50 + "╝")
 
     opcao = input("Escolha uma opção (1-2):\n ")
     if opcao == "1":
@@ -267,7 +270,7 @@ def menu_principal(usuario=None):
           )
     print("╔" + "═" * 50 + "╗")
     print("  1. 🎬 Consultar biblioteca de conteúdo")
-    print("  2. ⚙️  Configurações de usuário")
+    print("  2. ⚙️ Configurações de usuário")
     print("  3. ⭐ Recomendações personalizadas")
     print("  4. 📺 Streaming em múltiplos dispositivos")
     print("  5. 📚 Marcar conteúdo e histórico de visualização")
@@ -275,7 +278,7 @@ def menu_principal(usuario=None):
     print("  7. 🚪 Logout")
     print("╚" + "═" * 50 + "╝")
 
-    opcao = input("Escolha uma opção (1-8):\n ")
+    opcao = input("Escolha uma opção (1-7):\n ")
 
     if opcao == "1":
         limpar_tela()
@@ -292,9 +295,12 @@ def menu_principal(usuario=None):
     elif opcao == "3":
         limpar_tela()
         print("Selecione o perfil para visualizar recomendações personalizadas:\n")
-        usuario.listar_perfis()
-        nome_perfil = input("Digite o nome do perfil: ")
-        perfil = usuario.obter_perfil_por_nome(nome_perfil)
+        booleano = usuario.listar_perfis() 
+        if booleano:
+            nome_perfil = input("Digite o nome do perfil: ")
+            perfil = usuario.obter_perfil_por_nome(nome_perfil)
+        else:
+            menu_principal(usuario)
 
         if perfil:
             perfil.recomendacoes.recomendar_conteudo(usuario)
@@ -305,8 +311,8 @@ def menu_principal(usuario=None):
         limpar_tela()
         menu_principal(usuario)
     elif opcao == "4":
-        #implementar funcao streaming_multiplos_dispositivos()
-        print("Não implementado\n")
+        limpar_tela()
+        usuario.multiplo_streaming.menu_de_streaming()
         time.sleep(2)
         limpar_tela()
         menu_principal(usuario)
@@ -315,12 +321,12 @@ def menu_principal(usuario=None):
         limpar_tela()
         while True:
             print("Marcação de conteúdo e histórico de visualização:\n")
-            print("==========================================")
+            print("╔" + "═" * 50 + "╗")
             print("1. Ver histórico de exibição\n")
             print("2. Limpar histórico de exibição\n")
             print("3. Opções de Bookmarking\n")
             print("4. Voltar ao menu principal")
-            print("==========================================")
+            print("╚" + "═" * 50 + "╝")
             opcao_historico = input("Escolha uma opção (1-4):\n ")
             if opcao_historico == "1":
                 limpar_tela()

@@ -79,12 +79,12 @@ def bookmarking(usuario):
         print(f"Perfil '{nome_perfil}' não encontrado. Por favor, tente novamente.")
         return
 
-    print("=======================================")
+    print("╔" + "═" * 50 + "╗")
     print("O que deseja fazer?")
     print("1. Marcar conteúdo")
     print("2. Desmarcar conteúdo")
     print("3. Ver os conteúdos marcados")
-    print("=======================================")
+    print("╚" + "═" * 50 + "╝")
     acao = input("Digite o número da ação desejada: ")
 
     if acao == "1":
