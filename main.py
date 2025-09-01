@@ -124,7 +124,6 @@ def menu_config_usuario(usuario):
         opcao_usuario = input("Escolha uma opção (1-4):\n ")
         
         if opcao_usuario == "1":       
-        #Aplicando o módulo de listar perfis feito no user_management 
             limpar_tela()
             if usuario.listar_perfis():
                 print("Deseja adicionar ou remover um perfil?")
@@ -168,13 +167,14 @@ def menu_config_usuario(usuario):
 
             while True:
                 print("Configurações de Controle Parental:\n")
-                print("╔" + "═" * 50 + "╗")
-                print("Você pode ativar o controle parental para um perfil existente ou restringir conteúdo.")
+                print("╔" + "═" * 150 + "╗")
+                print("Você pode ativar o controle parental para um perfil existente ou restringir conteúdo.\n")
+                print("Observação: Ao desativar ou mudar o tipo de restrição, as mídias já assistidas no perfil serão redefinidas para não assistidas.")
                 print("1. Ativar controle parental")
                 print("2. Desativar controle parental")
                 print("3. Restrição de conteúdo")
                 print("4. Voltar ao menu de configurações")
-                print("╚" + "═" * 50 + "╝")
+                print("╚" + "═" * 150 + "╝")
                 escolha = input("Escolha uma opção (1-4):\n ")
 
                 if escolha == "1":
@@ -191,10 +191,10 @@ def menu_config_usuario(usuario):
 
                             if escolha_controle == "1":
                                 limpar_tela()
-                                continue  # volta para o início do loop e ativa para outro perfil
+                                continue  
                             elif escolha_controle == "2":
                                 limpar_tela()
-                                break  # sai do loop e volta ao menu_config_usuario
+                                break  
                             else:
                                 print("Opção inválida. Tente novamente.")
                                 time.sleep(2)

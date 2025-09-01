@@ -37,6 +37,7 @@ def select_profile_for_not_parental_control(usuario):
         if perfil_encontrado:
             usuario.desativar_controle_parental(perfil_encontrado)
             perfil_encontrado.idade_limite = 18  # Resetando a idade limite para o padrão
+            perfil_encontrado.catalogo = None  # Resetando o catálogo para o padrão
             break
         else:
             print("Perfil não encontrado. Verifique a sua escrita.\n")
@@ -96,6 +97,7 @@ def restringir_conteudo(usuario):
 
             idade = escolhas[opcao]
             perfil.idade_limite = idade
+            perfil.catalogo = None
             print(f"Idade limite escolhida: {idade}")
 
         except KeyError:

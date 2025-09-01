@@ -4,7 +4,6 @@ import time
 
 class Recomendacoes:
     def __init__(self):
-        #self.nome = nome (ver o que fazer com isso, se for usar o nome do filme aq)
         self.conteudos = []
 
     def adicionar_conteudo(self, nome):

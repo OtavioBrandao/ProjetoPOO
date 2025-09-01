@@ -25,7 +25,9 @@ class Historico:
         self.historico.clear()
         print("Seu histórico foi limpo com sucesso.")
 
-def ver_historico_de_exibicao(historico):
+# Recebe o objeto histórico de algum Perfil específico, a partir dele podemos ver seu historico ou limpar
+
+def ver_historico_de_exibicao(historico):  
     historico.exibir_historico()
 
 def limpar_historico(historico):

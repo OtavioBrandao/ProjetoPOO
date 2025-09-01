@@ -489,7 +489,6 @@ def Explorar_Conteudo_Convidado():
             print("\nConteúdos encontrados (máx. 3):\n")
             for idx, midia in enumerate(resultados_limitados):
                 print(f"[{idx + 1}]")
-                midia.exibir_informacoes()
                 print()
 
             escolha_conteudo = input("Digite o número do conteúdo que deseja assistir: ")
