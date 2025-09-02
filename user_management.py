@@ -16,76 +16,88 @@ from multi_device import StreamingSession
 
 class User:
     def __init__(self, nome, email, senha):
-        self.nome = nome
-        self.email = email
-        self.senha = senha
-        self.perfis = []
-        self.plano = Plano("Gratuito", "R$ 0,00")
-        self.multiplo_streaming = StreamingSession(self)
-        self.otimizacao_banda_larga = BandaLarga()
-        self.conteudos_vistos = 0
-        self.ultimo_conteudo_assistido = None
+        self._nome = nome
+        self._email = email
+        self.__senha = senha  # Senha privada
+        self._perfis = []
+        self._plano = Plano("Gratuito", "R$ 0,00")
+        self._multiplo_streaming = StreamingSession(self)
+        self._otimizacao_banda_larga = BandaLarga()
+        self._conteudos_vistos = 0
+        self._ultimo_conteudo_assistido = None
 
-    def adicionar_perfil(self, nome, controle_parental=False):
+    # Property para email com validação
+    @property
+    def email(self):
+        return self._email
 
-        if len(self.perfis) >= self.plano.maximo_perfis:
-            print(f"Limite de perfis atingido. Você só pode ter {self.plano.maximo_perfis} perfis.")
-            return
-        
-        if any(perfil.nome_perfil == nome for perfil in self.perfis):
-            print(f"Perfil '{nome}' já existe. Por favor, escolha outro nome.")
-            return
-        novo_perfil = Perfil(nome, controle_parental)
-        self.perfis.append(novo_perfil)
-        print(f"Perfil '{nome}' adicionado com sucesso!\n")
-    
-    def remover_perfil(self, nome):
-        for perfil in self.perfis:
-            if perfil.nome_perfil == nome:
-                self.perfis.remove(perfil)
-                print(f"Perfil '{nome}' removido com sucesso!")
-                return
-            else: 
-                print(f"Perfil '{nome}' não encontrado.")
+    @email.setter
+    def email(self, value):
+        if len(value) > 3 and "@" in value:  # Validação simples do email
+            self._email = value
+        else:
+            raise ValueError("Email inválido.")
 
-    def obter_perfil_por_nome(self, nome_perfil):
-        for perfil in self.perfis:
-            if perfil.nome_perfil == nome_perfil:
-                return perfil
-        return None
+    # Property para senha com validação
+    @property
+    def senha(self):
+        return "***PROTEGIDA***"
 
-    def listar_perfis(self):
-        if not self.perfis:
-            print("Nenhum perfil encontrado. Deseja adicionar um perfil?")
-            print("1. Sim")
-            print("2. Não")
-            escolha = input()
-            
-            if escolha == "1":
-                nome = input("Digite o nome do novo perfil: ")
-                self.adicionar_perfil(nome)
-                return True
-            if escolha == "2":
-                print("Nenhum perfil adicionado.")
-                return False
-            
-        print("Perfis disponíveis:\n")
-        for perfil in self.perfis:
-            print(perfil, "\n")
-        return True
+    @senha.setter
+    def senha(self, value):
+        if len(value) >= 5:  # Senha deve ter pelo menos 5 caracteres
+            self.__senha = value
+        else:
+            raise ValueError("Senha deve ter pelo menos 5 caracteres.")
 
+    # Validação do login
     def login(self, nome, senha):
-        if self.nome == nome and self.senha == senha:
+        if self._nome == nome and self.__verificar_senha(senha):
             return True
         else:
             return False
+
+    def __verificar_senha(self, senha_fornecida):
+        if len(senha_fornecida) < 5:
+            print("Senha inválida, deve ter pelo menos 5 caracteres.")
+            return False
+        return self.__senha == senha_fornecida
+
+    # Restante dos métodos
+    def adicionar_perfil(self, nome, controle_parental=False):
+        if len(self._perfis) >= self._plano.maximo_perfis:
+            print(f"Limite de perfis atingido. Você só pode ter {self._plano.maximo_perfis} perfis.")
+            return
+        if any(perfil.nome_perfil == nome for perfil in self._perfis):
+            print(f"Perfil '{nome}' já existe. Por favor, escolha outro nome.")
+            return
+        novo_perfil = Perfil(nome, controle_parental)
+        self._perfis.append(novo_perfil)
+        print(f"Perfil '{nome}' adicionado com sucesso!\n")
+
+    def remover_perfil(self, nome):
+        for perfil in self._perfis:
+            if perfil.nome_perfil == nome:
+                self._perfis.remove(perfil)
+                print(f"Perfil '{nome}' removido com sucesso!")
+                return
+        print(f"Perfil '{nome}' não encontrado.")
+
+    def listar_perfis(self):
+        if not self._perfis:
+            print("Nenhum perfil encontrado. Deseja adicionar um perfil?")
+            return False
+        print("Perfis disponíveis:")
+        for perfil in self._perfis:
+            print(perfil)
+        return True
         
     def gerenciar_plano(self):
         while True:
             limpar_tela()
-            if self.plano.nome == "Gratuito":
-                print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
-                self.plano.exibir_beneficios()
+            if self._plano.nome == "Gratuito":
+                print(f"Plano atual: {self._plano.nome} - {self._plano.preco}")
+                self._plano.exibir_beneficios()
                 print("\nOpções de Gerenciamento de Plano:")
                 print("╔" + "═" * 50 + "╗")
                 print("1. Mudar para Básico")
@@ -94,10 +106,10 @@ class User:
                 print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
-                    self.plano.realizar_pagamento("Básico")
+                    self._plano.realizar_pagamento("Básico")
                     limpar_tela()
                 elif escolha == "2":
-                    self.plano.realizar_pagamento("Premium")
+                    self._plano.realizar_pagamento("Premium")
                     limpar_tela()
                 elif escolha == "3":
                     print("Voltando ao menu de configurações...")
@@ -107,9 +119,9 @@ class User:
                 time.sleep(2)
                 limpar_tela()
 
-            elif self.plano.nome == "Básico":
-                print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
-                self.plano.exibir_beneficios()
+            elif self._plano.nome == "Básico":
+                print(f"Plano atual: {self._plano.nome} - {self._plano.preco}")
+                self._plano.exibir_beneficios()
                 print("\nOpções de Gerenciamento de Plano:")
                 print("╔" + "═" * 50 + "╗")
                 print("1. Mudar para Premium")
@@ -118,12 +130,12 @@ class User:
                 print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
-                    self.plano.realizar_pagamento("Premium")
+                    self._plano.realizar_pagamento("Premium")
                     limpar_tela()
                 elif escolha == "2":
-                    if self.plano.cancelar_plano() is True:
-                        if len(self.perfis) > 5:
-                            self.perfis = self.perfis[:5]
+                    if self._plano.cancelar_plano() is True:
+                        if len(self._perfis) > 5:
+                            self._perfis = self._perfis[:5]
                         print("Plano cancelado. Voltando ao plano Gratuito.")
                     else:
                         continue
@@ -134,9 +146,9 @@ class User:
                     print("Opção inválida.")
                 time.sleep(2)
                 limpar_tela()
-            elif self.plano.nome == "Premium":
-                print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
-                self.plano.exibir_beneficios()
+            elif self._plano.nome == "Premium":
+                print(f"Plano atual: {self._plano.nome} - {self._plano.preco}")
+                self._plano.exibir_beneficios()
                 print("\nOpções de Gerenciamento de Plano:")
                 print("╔" + "═" * 50 + "╗")
                 print("1. Cancelar Plano")
@@ -144,9 +156,9 @@ class User:
                 print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
-                    self.plano.cancelar_plano()
-                    if len(self.perfis) > 5:
-                        self.perfis = self.perfis[:5]
+                    self._plano.cancelar_plano()
+                    if len(self._perfis) > 5:
+                        self._perfis = self._perfis[:5]
                     print("Plano cancelado. Voltando ao plano Gratuito.")
                     time.sleep(2)
                     limpar_tela()
@@ -159,8 +171,7 @@ class User:
                 limpar_tela()
 
     def ativar_controle_parental(self, perfil):
-        if perfil in self.perfis:
-
+        if perfil in self._perfis:
             if perfil.controle_parental:
                 print(f"Controle parental já está ativado para o perfil: {perfil.nome_perfil}")
                 return
@@ -172,8 +183,7 @@ class User:
             print("Perfil não encontrado.")
 
     def desativar_controle_parental(self, perfil):
-        if perfil in self.perfis:
-
+        if perfil in self._perfis:
             if not perfil.controle_parental:
                 print(f"Controle parental já está desativado para o perfil: {perfil.nome_perfil}")
                 return
