@@ -26,14 +26,6 @@ python main.py
 
 ---
 
-## 📝 **Para fazer:**
--
-- 🔸 **Ver a possibilidade de adicionar encapsulamento e ver onde fazer isso**
-- 🔸 **Corrigir bugs visuais na seleção de mídia**
-- 🔸 **Revisar o código e adicionar comentários**
-- 🔸 **Realizar a predefinição de algumas coisas para a apresentação**
----
-
 ## 🏗️ **Estrutura de Projeto**
 
 ### 🏛️ **Classes:**
