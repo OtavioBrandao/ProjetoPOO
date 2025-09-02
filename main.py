@@ -5,12 +5,13 @@ from utility import limpar_tela
 from library_management import Explorar_Conteudo, Explorar_Conteudo_Convidado
 from bookmarking_and_history import ver_historico_de_exibicao, limpar_historico, bookmarking
 from rating_and_reviews import Avaliacoes, processo_para_avaliar
+from predefinitions import retornar_usuarios_predefinidos, retornar_avaliacoes_predefinidas
 
 
 # Video Streaming Service - Main Module
 
-usuarios_registrados = []  # Lista para armazenar usuários registrados
-reviews = Avaliacoes()
+usuarios_registrados = retornar_usuarios_predefinidos()
+reviews = retornar_avaliacoes_predefinidas()
 
 def inicializar():
     limpar_tela()
@@ -19,35 +20,50 @@ def inicializar():
     print("╚" + "═" * 20 + "╝")
 
 def criar_conta():
-    print("Digite o nome do usuário:")
-    nome = input()
-        # Verifica se o usuário já existe
-    for usuario in usuarios_registrados:
-        if usuario.nome == nome:
-            print("Usuário já existe. Tente novamente.")
-            return criar_conta()
-        
-    print("Digite seu email:")
-    email = input()
-        # Verifica se o email já está registrado
-    for usuario in usuarios_registrados:
-        if usuario.email == email:
-            print("Esse email já foi registrado. Tente novamente.")
-            return criar_conta()
-        
-    print("Digite sua senha:")
-    senha = input()
-    print("Confirme sua senha:")
-    senha2 = input()
+    
+    while True:
+        limpar_tela()
+        try:
+            print("Digite o nome do usuário:")
+            nome = input().strip()
+            
+            for usuario in usuarios_registrados:
+                if usuario.nome == nome:
+                    print("Usuário já existe. Tente novamente.")
+                    continue
+            
+            print("Digite seu email:")
+            email = input().strip()
+            
+            for usuario in usuarios_registrados:
+                if usuario.email == email:
+                    print("Esse email já foi registrado. Tente novamente.")
+                    continue
+                
+            print("Digite sua senha:")
+            senha = input()
+            print("Confirme sua senha:")
+            senha2 = input()
 
-    # Verifica se as senhas coincidem
-    if senha == senha2:
-        novo_usuario = User(nome, email, senha) # Instancia de um novo usuário que será adicionado à lista
-        usuarios_registrados.append(novo_usuario)
-        print("Sua conta foi criada com sucesso!")
-    else:
-        print("As senhas não coincidem. Tente novamente.")
-        criar_conta()
+            if senha != senha2:
+                print("As senhas não coincidem. Tente novamente.")
+                continue
+
+            novo_usuario = User(nome, email, senha)
+            usuarios_registrados.append(novo_usuario)
+            print("Sua conta foi criada com sucesso!")
+            break
+            
+        except ValueError as e:
+            print(f"Erro: {e}")
+            print("Tente novamente.")
+            time.sleep(2)
+            continue
+        except Exception as e:
+            print(f"Erro inesperado: {e}")
+            print("Tente novamente.")
+            time.sleep(2)
+            continue
 
 def fazer_login(usuarios_registrados):
     nome = input("Digite seu nome de usuário: ")

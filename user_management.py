@@ -7,74 +7,127 @@
 # Gerenciar plano (gratuito/pago)
 # Adicionar e remover perfis (dentro da conta)
 # Ativar/desativar controle parental por perfil
+
 from recommendations import Recomendacoes
 from bookmarking_and_history import Historico, Marcar
 from bandwidth_optimization import BandaLarga
 import time
 from utility import limpar_tela
 from multi_device import StreamingSession
+import re
 
 class User:
     def __init__(self, nome, email, senha):
-        self._nome = nome
-        self._email = email
-        self.__senha = senha  # Senha privada
+        self._nome = None
+        self._email = None  
+        self.__senha = None
         self._perfis = []
         self._plano = Plano("Gratuito", "R$ 0,00")
         self._multiplo_streaming = StreamingSession(self)
         self._otimizacao_banda_larga = BandaLarga()
         self._conteudos_vistos = 0
         self._ultimo_conteudo_assistido = None
+        
+        # Usa os setters para validação
+        self.nome = nome
+        self.email = email
+        self.senha = senha
 
-    # Property para email com validação
+    @property
+    def nome(self):
+        return self._nome
+    
+    @nome.setter
+    def nome(self, value):
+        if not value or not value.strip():
+            raise ValueError("Nome não pode ser vazio")
+        if len(value.strip()) < 2:
+            raise ValueError("Nome deve ter pelo menos 2 caracteres")
+        if len(value.strip()) > 20:
+            raise ValueError("Nome deve ter no máximo 20 caracteres")
+        self._nome = value.strip()
+
     @property
     def email(self):
         return self._email
-
+    
     @email.setter
     def email(self, value):
-        if len(value) > 3 and "@" in value:  # Validação simples do email
-            self._email = value
-        else:
-            raise ValueError("Email inválido.")
+        if not value or not value.strip():
+            raise ValueError("Email não pode ser vazio")
+        
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_pattern, value.strip()):
+            raise ValueError("Email deve ter um formato válido (exemplo@dominio.com)")
+        
+        self._email = value.strip().lower()
 
-    # Property para senha com validação
     @property
     def senha(self):
-        return "***PROTEGIDA***"
-
+        return "***Senha protegida***"
+    
     @senha.setter
     def senha(self, value):
-        if len(value) >= 5:  # Senha deve ter pelo menos 5 caracteres
-            self.__senha = value
-        else:
-            raise ValueError("Senha deve ter pelo menos 5 caracteres.")
+        if not value:
+            raise ValueError("Senha não pode ser vazia")
+        if len(value) < 6:
+            raise ValueError("Senha deve ter pelo menos 6 caracteres")
+        if len(value) > 128:
+            raise ValueError("Senha deve ter no máximo 128 caracteres")
+        
+        self.__senha = value
 
-    # Validação do login
-    def login(self, nome, senha):
-        if self._nome == nome and self.__verificar_senha(senha):
-            return True
-        else:
-            return False
+    @property
+    def perfis(self):
+        return self._perfis.copy()  
 
-    def __verificar_senha(self, senha_fornecida):
-        if len(senha_fornecida) < 5:
-            print("Senha inválida, deve ter pelo menos 5 caracteres.")
-            return False
-        return self.__senha == senha_fornecida
+    @property
+    def plano(self):
+        return self._plano
 
-    # Restante dos métodos
+    @plano.setter
+    def plano(self, value):
+        self._plano = value
+
+    @property
+    def conteudos_vistos(self):
+        return self._conteudos_vistos
+
+    @conteudos_vistos.setter
+    def conteudos_vistos(self, value):
+        if value < 0:
+            raise ValueError("Número de conteúdos vistos não pode ser negativo")
+        self._conteudos_vistos = value
+
+    @property
+    def ultimo_conteudo_assistido(self):
+        return self._ultimo_conteudo_assistido
+    
+    @property
+    def multiplo_streaming(self):
+        return self._multiplo_streaming
+    
+    @property
+    def otimizacao_banda_larga(self):
+        return self._otimizacao_banda_larga
+
+    @ultimo_conteudo_assistido.setter
+    def ultimo_conteudo_assistido(self, value):
+        self._ultimo_conteudo_assistido = value
+
     def adicionar_perfil(self, nome, controle_parental=False):
         if len(self._perfis) >= self._plano.maximo_perfis:
             print(f"Limite de perfis atingido. Você só pode ter {self._plano.maximo_perfis} perfis.")
             return
+
         if any(perfil.nome_perfil == nome for perfil in self._perfis):
             print(f"Perfil '{nome}' já existe. Por favor, escolha outro nome.")
             return
+        
         novo_perfil = Perfil(nome, controle_parental)
         self._perfis.append(novo_perfil)
         print(f"Perfil '{nome}' adicionado com sucesso!\n")
-
+    
     def remover_perfil(self, nome):
         for perfil in self._perfis:
             if perfil.nome_perfil == nome:
@@ -83,21 +136,47 @@ class User:
                 return
         print(f"Perfil '{nome}' não encontrado.")
 
+    def obter_perfil_por_nome(self, nome_perfil):
+        for perfil in self._perfis:
+            if perfil.nome_perfil == nome_perfil:
+                return perfil
+        return None
+
     def listar_perfis(self):
         if not self._perfis:
             print("Nenhum perfil encontrado. Deseja adicionar um perfil?")
-            return False
-        print("Perfis disponíveis:")
+            print("1. Sim")
+            print("2. Não")
+            escolha = input()
+            
+            if escolha == "1":
+                nome = input("Digite o nome do novo perfil: ")
+                self.adicionar_perfil(nome)
+                return True
+            if escolha == "2":
+                print("Nenhum perfil adicionado.")
+                return False
+            
+        print("Perfis disponíveis:\n")
         for perfil in self._perfis:
-            print(perfil)
+            print(perfil, "\n")
         return True
+
+    def verificar_senha(self, senha):
+        return self.__senha == senha
+
+    def login(self, nome, senha):
+        if self._nome == nome and self.verificar_senha(senha):
+            return True
+        else:
+            return False
         
     def gerenciar_plano(self):
         while True:
             limpar_tela()
-            if self._plano.nome == "Gratuito":
-                print(f"Plano atual: {self._plano.nome} - {self._plano.preco}")
-                self._plano.exibir_beneficios()
+            if self.plano.nome == "Gratuito":
+                print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
+                self.plano.exibir_beneficios()
                 print("\nOpções de Gerenciamento de Plano:")
                 print("╔" + "═" * 50 + "╗")
                 print("1. Mudar para Básico")
@@ -106,10 +185,10 @@ class User:
                 print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
-                    self._plano.realizar_pagamento("Básico")
+                    self.plano.realizar_pagamento("Básico")
                     limpar_tela()
                 elif escolha == "2":
-                    self._plano.realizar_pagamento("Premium")
+                    self.plano.realizar_pagamento("Premium")
                     limpar_tela()
                 elif escolha == "3":
                     print("Voltando ao menu de configurações...")
@@ -119,9 +198,9 @@ class User:
                 time.sleep(2)
                 limpar_tela()
 
-            elif self._plano.nome == "Básico":
-                print(f"Plano atual: {self._plano.nome} - {self._plano.preco}")
-                self._plano.exibir_beneficios()
+            elif self.plano.nome == "Básico":
+                print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
+                self.plano.exibir_beneficios()
                 print("\nOpções de Gerenciamento de Plano:")
                 print("╔" + "═" * 50 + "╗")
                 print("1. Mudar para Premium")
@@ -130,11 +209,11 @@ class User:
                 print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
-                    self._plano.realizar_pagamento("Premium")
+                    self.plano.realizar_pagamento("Premium")
                     limpar_tela()
                 elif escolha == "2":
-                    if self._plano.cancelar_plano() is True:
-                        if len(self._perfis) > 5:
+                    if self.plano.cancelar_plano() is True:
+                        if len(self.perfis) > 5:
                             self._perfis = self._perfis[:5]
                         print("Plano cancelado. Voltando ao plano Gratuito.")
                     else:
@@ -146,9 +225,10 @@ class User:
                     print("Opção inválida.")
                 time.sleep(2)
                 limpar_tela()
-            elif self._plano.nome == "Premium":
-                print(f"Plano atual: {self._plano.nome} - {self._plano.preco}")
-                self._plano.exibir_beneficios()
+                
+            elif self.plano.nome == "Premium":
+                print(f"Plano atual: {self.plano.nome} - {self.plano.preco}")
+                self.plano.exibir_beneficios()
                 print("\nOpções de Gerenciamento de Plano:")
                 print("╔" + "═" * 50 + "╗")
                 print("1. Cancelar Plano")
@@ -156,8 +236,8 @@ class User:
                 print("╚" + "═" * 50 + "╝")
                 escolha = input("Escolha uma opção: ")
                 if escolha == "1":
-                    self._plano.cancelar_plano()
-                    if len(self._perfis) > 5:
+                    self.plano.cancelar_plano()
+                    if len(self.perfis) > 5:
                         self._perfis = self._perfis[:5]
                     print("Plano cancelado. Voltando ao plano Gratuito.")
                     time.sleep(2)

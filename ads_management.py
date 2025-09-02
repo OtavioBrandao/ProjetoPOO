@@ -14,11 +14,6 @@ class GerenciarAnuncio:
     def __init__(self): pass
 
     def exibir_anuncio(self, usuario, banco_ads):
-
-        """Tenta exibir anúncios enquanto o usuário não apertar Enter.
-        A cada 'alvo' segundos, decide conforme a chance do plano.
-        Retorna True se algum anúncio foi exibido na sessão."""
-
         print("Pressione Enter para pausar.")
         exibido = False
         parar = threading.Event()
